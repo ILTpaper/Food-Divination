@@ -3,225 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>食物占卜 🍜</title>
+  <meta name="description" content="用食物占卜今天的運勢！選擇你的三餐，探索專屬於你的美食命運">
+  <meta name="keywords" content="食物占卜,運勢,塔羅牌,今天吃什麼">
+  <title>食物占卜 🔮 - 今天吃什麼，由宇宙決定</title>
+  
   <style>
-    /* 溫馨手繪風格延續：米黃咖啡漬 + 暖棕漸層 */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Microsoft JhengHei", "PingFang TC", "Helvetica Neue", Helvetica, Arial, sans-serif;
-      background: #faf4ed url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 100 100"><circle cx="25" cy="25" r="10" fill="%23d7ccc8"/><circle cx="75" cy="35" r="15" fill="%23bcaaa4"/><circle cx="55" cy="75" r="12" fill="%23d7ccc8"/></svg>') repeat;
-      background-size: 100px;
-      color: #5d4037;
-      min-height: 100vh;
-      position: relative;
-      overflow-x: auto;
-    }
-
-    /* 背景溫柔飄浮裝飾 */
-    .deco {
-      position: fixed;
-      font-size: 3.5em;
-      opacity: 0.12;
-      pointer-events: none;
-      animation: gentleFloat 25s infinite linear;
-      z-index: 1;
-    }
-    .deco1 { top: 10%; left: 5%; animation-delay: 0s; }
-    .deco2 { top: 20%; right: 8%; animation-delay: 7s; }
-    .deco3 { bottom: 25%; left: 6%; animation-delay: 14s; }
-    .deco4 { bottom: 12%; right: 5%; animation-delay: 20s; }
-    @keyframes gentleFloat {
-      0% { transform: translateY(0) rotate(0deg) scale(1); }
-      100% { transform: translateY(-120vh) rotate(180deg) scale(1.1); }
-    }
-
-    .main-container {
-      min-height: 100vh;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      z-index: 2;
-    }
-
-    .container {
-      max-width: 850px;
-      width: 95%;
-      background: rgba(255, 255, 252, 0.95);
-      border-radius: 32px;
-      padding: 50px 40px;
-      box-shadow: 
-        0 20px 50px rgba(161, 117, 87, 0.25),
-        inset 0 0 30px rgba(255, 240, 220, 0.5);
-      text-align: center;
-      backdrop-filter: blur(15px);
-      margin-bottom: 30px;
-    }
-
-    /* 標題溫暖手寫 */
-    h1 {
-      font-size: 3em;
-      margin: 0 0 12px;
-      background: linear-gradient(135deg, #8d5524, #c68642, #ffab40);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-shadow: 0 3px 6px rgba(198, 134, 66, 0.2);
-    }
-
-    .subtitle {
-      font-size: 1.25em;
-      color: #8d5524;
-      margin-bottom: 35px;
-      opacity: 0.9;
-    }
-
-    /* 輸入 + 篩選器區 */
-    .search-section {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      margin: 35px 0;
-      padding: 25px;
-      background: rgba(255, 240, 220, 0.4);
-      border-radius: 25px;
-      box-shadow: inset 0 4px 15px rgba(255, 204, 128, 0.2);
-    }
-
-    .input-group, .filter-group {
-      flex: 1;
-      min-width: 280px;
-      text-align: left;
-    }
-
-    label {
-      display: block;
-      font-size: 1.15em;
-      margin-bottom: 12px;
-      color: #6d4c41;
-      font-weight: 500;
-    }
-
-    input[type="text"], select {
-      width: 100%;
-      padding: 16px 22px;
-      border: 2px solid #d7ccc8;
-      border-radius: 25px;
-      font-size: 1.1em;
-      background: rgba(255, 255, 255, 0.8);
-      box-sizing: border-box;
-      transition: all 0.3s;
-    }
-
-    input[type="text"]:focus, select:focus {
-      outline: none;
-      border-color: #ffab40;
-      box-shadow: 0 0 20px rgba(255, 171, 64, 0.3);
-      transform: scale(1.02);
-    }
-
-    /* 查詢按鈕 */
-    .btn {
-      display: inline-block;
-      padding: 18px 35px;
-      background: linear-gradient(to bottom, #ffcc80, #ffab40);
-      color: #5d4037;
-      font-size: 1.35em;
-      font-weight: bold;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 10px 28px rgba(255, 171, 64, 0.4);
-      transition: all 0.4s ease;
-      margin: 0 10px;
-    }
-
-    .btn:hover {
-      transform: translateY(-5px) scale(1.03);
-      box-shadow: 0 15px 40px rgba(255, 171, 64, 0.5);
-    }
-
-    .btn:active { transform: translateY(0); }
-
-    /* 結果表格：卡片堆疊風 */
-    .records {
-      margin-top: 45px;
-    }
-
-    .records-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-      font-size: 1.1em;
-      color: #8d5524;
-    }
-
-    .record-count {
-      background: rgba(255, 204, 128, 0.3);
-      padding: 8px 20px;
-      border-radius: 20px;
-      font-weight: 500;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0 15px;
-    }
-
-    th {
-      background: linear-gradient(to right, rgba(255, 204, 128, 0.4), rgba(255, 171, 64, 0.3));
-      padding: 18px 20px;
-      color: #8d5524;
-      font-weight: 600;
-      border-radius: 15px 15px 0 0;
-    }
-
-    td {
-      background: rgba(255, 255, 255, 0.75);
-      padding: 20px 22px;
-      box-shadow: 0 6px 18px rgba(161, 117, 87, 0.12);
-      transition: all 0.3s;
-    }
-
-    tr:hover td {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(161, 117, 87, 0.2);
-      background: rgba(255, 255, 255, 0.9);
-    }
-
-    tr td:first-child { border-radius: 15px 0 0 15px; }
-    tr td:last-child { border-radius: 0 15px 15px 0; }
-
-    /* 無紀錄溫馨提示 */
-    .no-record {
-      text-align: center;
-      font-size: 1.3em;
-      color: #a1887f;
-      margin: 50px 0;
-      padding: 45px 30px;
-      background: linear-gradient(135deg, rgba(255, 240, 220, 0.6), rgba(255, 204, 128, 0.3));
-      border-radius: 25px;
-      box-shadow: inset 0 4px 15px rgba(255, 171, 64, 0.1);
-    }
-
-    .no-record .food-deco { font-size: 2.2em; margin: 0 12px; opacity: 0.7; }
-
-    /* 食物點綴 */
-    .food-deco { font-size: 1.8em; margin: 0 10px; opacity: 0.65; vertical-align: middle; }
-
-    /* 響應式 */
-    @media (max-width: 768px) {
-      .search-section { flex-direction: column; gap: 15px; }
-      .input-group, .filter-group { min-width: auto; }
-      table { font-size: 0.95em; }
-      th, td { padding: 15px 12px; }
-    }
     * {
       margin: 0;
       padding: 0;
@@ -229,1327 +15,326 @@
     }
 
     body {
-      font-family: 'Microsoft JhengHei', sans-serif;
+      font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
       background: linear-gradient(135deg, #f5e6d3 0%, #e8d4c0 100%);
       min-height: 100vh;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .page {
-      display: none;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    /* ===== 第1頁 - 首頁 ===== */
-    .home-header {
-      text-align: right;
-      margin-bottom: 20px;
-      font-size: 14px;
-      color: #b89968;
-    }
-
-    .home-header a {
-      color: #b89968;
-      text-decoration: none;
-      margin: 0 10px;
-      cursor: pointer;
-    }
-
-    .home-header a:hover {
-      text-decoration: underline;
-    }
-
-    .home-title {
-      text-align: center;
-      font-size: 48px;
-      margin: 60px 0 30px;
-      color: #5a3e2b;
-    }
-
-    .home-title .emoji {
-      font-size: 60px;
-      vertical-align: middle;
-    }
-
-    .home-description {
-      text-align: center;
-      line-height: 2;
-      color: #6b4e3d;
-      margin-bottom: 50px;
-      font-size: 16px;
-    }
-
-    .btn-primary {
-      display: block;
-      margin: 0 auto;
-      padding: 15px 60px;
-      background: white;
-      border: 2px solid #5a3e2b;
-      border-radius: 50px;
-      font-size: 20px;
-      color: #5a3e2b;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .btn-primary:hover {
-      background: #5a3e2b;
-      color: white;
-    }
-
-    /* ===== 第2頁 - 抽卡頁面 ===== */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      margin: 40px 0;
-    }
-
-    .card {
-      aspect-ratio: 2/3;
-      position: relative;
-      cursor: pointer;
-      perspective: 1000px;
-    }
-
-    .card.selected {
-      cursor: not-allowed;
-      opacity: 0.5;
-    }
-
-    .card-inner {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.6s;
-    }
-
-    .card.flipped .card-inner {
-      transform: rotateY(180deg);
-    }
-
-    .card-face {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 10px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .card-back {
-      background: linear-gradient(135deg, #c84848 0%, #a03636 100%);
-      border: 3px solid #8b2e2e;
+    /* 背景裝飾 */
+    .deco {
+      position: fixed;
+      font-size: 4em;
+      opacity: 0.1;
+      pointer-events: none;
+      animation: float 20s infinite ease-in-out;
     }
 
-    .card-back::before,
-    .card-back::after {
+    .deco1 { top: 10%; left: 10%; animation-delay: 0s; }
+    .deco2 { top: 20%; right: 10%; animation-delay: 5s; }
+    .deco3 { bottom: 15%; left: 15%; animation-delay: 10s; }
+    .deco4 { bottom: 20%; right: 15%; animation-delay: 15s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-30px) rotate(180deg); }
+    }
+
+    /* 主容器 */
+    .container {
+      max-width: 650px;
+      width: 100%;
+      background: rgba(255, 255, 252, 0.95);
+      border-radius: 40px;
+      padding: 60px 50px;
+      box-shadow: 
+        0 25px 60px rgba(161, 117, 87, 0.3),
+        inset 0 0 40px rgba(255, 240, 220, 0.5);
+      text-align: center;
+      backdrop-filter: blur(20px);
+      position: relative;
+      z-index: 1;
+      animation: slideUp 0.8s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 標題 */
+    h1 {
+      font-size: 3.5em;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, #8d5524, #c68642, #ffab40);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-shadow: 0 4px 10px rgba(198, 134, 66, 0.2);
+    }
+
+    .emoji {
+      font-size: 1.2em;
+      vertical-align: middle;
+      display: inline-block;
+      animation: rotate 3s infinite ease-in-out;
+    }
+
+    @keyframes rotate {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(15deg); }
+    }
+
+    /* 副標題 */
+    .subtitle {
+      font-size: 1.4em;
+      color: #8d5524;
+      margin-bottom: 40px;
+      line-height: 1.8;
+      opacity: 0.9;
+    }
+
+    /* 描述文字 */
+    .description {
+      font-size: 1.15em;
+      color: #6b4e3d;
+      line-height: 2;
+      margin-bottom: 50px;
+      padding: 30px;
+      background: rgba(255, 240, 220, 0.4);
+      border-radius: 25px;
+      border: 2px dashed #d7ccc8;
+    }
+
+    /* 主按鈕 */
+    .btn-main {
+      display: inline-block;
+      padding: 22px 70px;
+      background: linear-gradient(to bottom, #ffcc80, #ffab40);
+      color: #5d4037;
+      font-size: 1.6em;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 12px 35px rgba(255, 171, 64, 0.5);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-main::before {
       content: '';
       position: absolute;
-      width: 60%;
-      height: 2px;
-      background: rgba(0,0,0,0.3);
-      transform: rotate(-25deg);
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
     }
 
-    .card-back::after {
-      transform: rotate(25deg);
+    .btn-main:hover::before {
+      width: 400px;
+      height: 400px;
     }
 
-    .card-front {
-      background: linear-gradient(135deg, #fff9f0 0%, #f5e6d3 100%);
-      border: 3px solid #8b6f47;
-      transform: rotateY(180deg);
+    .btn-main:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 18px 50px rgba(255, 171, 64, 0.6);
     }
 
-    .card-emoji {
-      font-size: 60px;
-      margin-bottom: 10px;
+    .btn-main:active {
+      transform: translateY(0) scale(0.98);
     }
 
-    .card-name {
-      font-size: 14px;
-      color: #5a3e2b;
-      font-weight: bold;
-    }
-
-    .shuffle-btn {
-      display: block;
-      margin: 20px auto;
-      padding: 12px 40px;
-      background: #ff9999;
-      border: none;
-      border-radius: 30px;
-      font-size: 18px;
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .shuffle-btn:hover {
-      background: #ff7777;
-      transform: scale(1.05);
-    }
-
-    .view-selection-btn {
-      display: block;
-      margin: 20px auto;
-      padding: 12px 40px;
-      background: #8b6f47;
-      border: none;
-      border-radius: 30px;
-      font-size: 18px;
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .view-selection-btn:hover {
-      background: #6b5537;
-      transform: scale(1.05);
-    }
-
-    /* ===== 第3頁 - 選擇卡牌 ===== */
-    .result-title {
-      text-align: center;
-      font-size: 32px;
-      margin: 30px 0;
-      color: #5a3e2b;
-    }
-
-    .meals-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-      margin: 40px 0;
-    }
-
-    .meal-slot {
-      text-align: center;
-    }
-
-    .meal-label {
-      font-size: 20px;
-      margin-bottom: 15px;
-      color: #5a3e2b;
-      font-weight: bold;
-    }
-
-    .meal-card {
-      width: 100%;
-      aspect-ratio: 2/3;
-      background: linear-gradient(135deg, #f5e6d3 0%, #e8d4c0 100%);
-      border: 3px solid #8b6f47;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 15px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-
-    .meal-card.empty {
-      background: #f0f0f0;
-      border-style: dashed;
-      color: #999;
-    }
-
-    .meal-card .card-emoji {
-      font-size: 50px;
-    }
-
-    .meal-card .card-name {
-      font-size: 16px;
-      margin-top: 10px;
-    }
-
-    .meal-buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .btn-redraw, .btn-remove, .btn-restore {
-      padding: 8px 20px;
-      border: none;
-      border-radius: 20px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .btn-redraw {
-      background: #ff9999;
-      color: white;
-    }
-
-    .btn-remove {
-      background: #ff4444;
-      color: white;
-    }
-
-    .btn-restore {
-      background: #66cc66;
-      color: white;
-    }
-
-    .btn-view-result {
-      display: block;
-      margin: 40px auto;
-      padding: 15px 50px;
-      background: #8b6f47;
-      border: none;
-      border-radius: 30px;
-      font-size: 20px;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* ===== 第4頁 - 占卜結果 ===== */
-    .result-page {
-      background: linear-gradient(135deg, #5a3e2b 0%, #3d2817 100%);
-      min-height: 100vh;
-      padding: 40px 20px;
-      margin: -20px;
-    }
-
-    .result-box {
-      background: rgba(90, 62, 43, 0.8);
-      border-radius: 20px;
-      padding: 40px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .result-title-white {
-      text-align: center;
-      font-size: 32px;
-      color: white;
-      margin-bottom: 30px;
-    }
-
-    .result-meals {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 30px;
-    }
-
-    .result-meal-item {
-      text-align: center;
-      color: white;
-    }
-
-    .result-card {
-      width: 120px;
-      height: 180px;
-      background: linear-gradient(135deg, #fff9f0 0%, #f5e6d3 100%);
-      border: 3px solid #8b6f47;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
-
-    .result-card .card-emoji {
-      font-size: 50px;
-    }
-
-    .result-meal-name {
-      font-size: 14px;
-      margin-top: 5px;
-    }
-
-    .result-food-name {
-      font-size: 16px;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    .fortune-text {
-      color: white;
-      line-height: 2;
-      margin: 30px 0;
-      text-align: center;
-      font-size: 16px;
-    }
-
-    .result-actions {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      margin-top: 40px;
-    }
-
-    .btn-share, .btn-save {
-      padding: 12px 30px;
-      border: none;
-      border-radius: 30px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .btn-share {
-      background: #ff4444;
-      color: white;
-    }
-
-    .btn-save {
-      background: #ff4444;
-      color: white;
-    }
-
-    /* ===== Modal 登入/註冊 ===== */
-    .modal {
+    /* 載入動畫 */
+    .loading {
       display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.7);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
+      margin-top: 30px;
+      font-size: 1.2em;
+      color: #8d5524;
     }
 
-    .modal.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: white;
-      padding: 40px;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 400px;
-    }
-
-    .modal-title {
-      font-size: 24px;
-      margin-bottom: 20px;
-      text-align: center;
-      color: #5a3e2b;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
+    .loading.active {
       display: block;
-      margin-bottom: 8px;
-      color: #5a3e2b;
     }
 
-    .form-group input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 16px;
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(141, 85, 36, 0.3);
+      border-top-color: #8d5524;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      vertical-align: middle;
+      margin-right: 10px;
     }
 
-    .btn-submit {
-      width: 100%;
-      padding: 12px;
-      background: #8b6f47;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
-    .modal-footer {
-      margin-top: 15px;
-      text-align: center;
-      font-size: 14px;
+    /* 頁尾資訊 */
+    .footer {
+      margin-top: 40px;
+      font-size: 0.95em;
+      color: #a1887f;
+      line-height: 1.8;
     }
 
-    .modal-footer a {
-      color: #8b6f47;
-      cursor: pointer;
-      text-decoration: underline;
+    /* 特色標籤 */
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin: 35px 0;
+      flex-wrap: wrap;
+    }
+
+    .feature-tag {
+      padding: 10px 25px;
+      background: rgba(255, 204, 128, 0.3);
+      border-radius: 20px;
+      font-size: 0.95em;
+      color: #8d5524;
+      font-weight: 500;
+      border: 2px solid rgba(255, 171, 64, 0.2);
+    }
+
+    /* 響應式 */
+    @media (max-width: 768px) {
+      .container {
+        padding: 40px 30px;
+      }
+
+      h1 {
+        font-size: 2.5em;
+      }
+
+      .subtitle {
+        font-size: 1.2em;
+      }
+
+      .description {
+        font-size: 1em;
+        padding: 20px;
+      }
+
+      .btn-main {
+        padding: 18px 50px;
+        font-size: 1.3em;
+      }
+
+      .features {
+        gap: 15px;
+      }
+
+      .feature-tag {
+        font-size: 0.85em;
+        padding: 8px 18px;
+      }
     }
   </style>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
+  <!-- 背景裝飾 -->
+  <div class="deco deco1">🍜</div>
+  <div class="deco deco2">🍱</div>
+  <div class="deco deco3">🍲</div>
+  <div class="deco deco4">🥗</div>
+
   <div class="container">
-    
-    <!-- 第1頁：首頁 -->
-    <div id="page1" class="page active">
-      <div class="home-header">
-        <a onclick="showLogin()">會員登入</a> |
-        <a onclick="showRegister()">會員註冊</a> |
-        <a onclick="showHistory()">歷史查詢</a>
-      </div>
-      
-      <h1 class="home-title">
-        食物占卜 <span class="emoji">🔮</span>
-      </h1>
-      
-      <div class="home-description">
-        我們以溫暖、幽默且貼近生活的文字，讓你在選擇食物的過程中感<br>
-        受到陪伴與理解。透過飲食與運勢的深度連結，「今天吃什麼」不<br>
-        再只是生理需求的抉擇，而是一場探索自我狀態的日常小儀式。<br><br>
-        整體風格主打輕鬆療癒，專為學生與年輕族群設計，讓每一口食物<br>
-        都成為替生活增添趣味與期待的起點。
-      </div>
-      
-      <button class="btn-primary" onclick="goToPage(2)">開始占卜</button>
+    <h1>
+      食物占卜 <span class="emoji">🔮</span>
+    </h1>
+
+    <p class="subtitle">
+      今天吃什麼，由宇宙決定 ✨
+    </p>
+
+    <div class="features">
+      <span class="feature-tag">🎴 趣味占卜</span>
+      <span class="feature-tag">🍽️ 三餐建議</span>
+      <span class="feature-tag">💫 運勢解讀</span>
     </div>
 
-    <!-- 第2頁：抽卡頁面 -->
-    <div id="page2" class="page">
-      <h2 class="result-title">選擇你的三餐</h2>
+    <div class="description">
+      我們以溫暖、幽默且貼近生活的文字，<br>
+      讓你在選擇食物的過程中感受到陪伴與理解。<br><br>
       
-      <div class="cards-grid" id="cardsGrid">
-        <!-- 卡牌將由 JavaScript 動態生成 -->
-      </div>
+      透過飲食與運勢的深度連結，<br>
+      「今天吃什麼」不再只是生理需求的抉擇，<br>
+      而是一場探索自我狀態的日常小儀式。<br><br>
       
-      <button class="shuffle-btn" onclick="shuffleCards()">洗牌</button>
-      <button class="view-selection-btn" onclick="goToPage(3)">挑選卡片</button>
+      <strong style="color: #c68642;">✨ 整體風格主打輕鬆療癒 ✨</strong><br>
+      專為學生與年輕族群設計，<br>
+      讓每一口食物都成為替生活增添趣味與期待的起點。
     </div>
 
-    <!-- 第3頁：選擇卡牌 -->
-    <div id="page3" class="page">
-      <h2 class="result-title">您的占卜結果</h2>
-      
-      <div class="meals-container">
-        <div class="meal-slot">
-          <div class="meal-label">早餐</div>
-          <div class="meal-card" id="breakfastCard">
-            <span style="color: #999;">尚未選擇</span>
-          </div>
-          <div class="meal-buttons">
-            <button class="btn-redraw" onclick="redrawMeal('breakfast')">重抽</button>
-            <button class="btn-remove" id="breakfastRemove" onclick="toggleRemove('breakfast')">移除</button>
-          </div>
-        </div>
+    <a href="#" class="btn-main" id="startBtn" onclick="redirectToApp(event)">
+      <span style="position: relative; z-index: 1;">🎯 開始占卜</span>
+    </a>
 
-        <div class="meal-slot">
-          <div class="meal-label">午餐</div>
-          <div class="meal-card" id="lunchCard">
-            <span style="color: #999;">尚未選擇</span>
-          </div>
-          <div class="meal-buttons">
-            <button class="btn-redraw" onclick="redrawMeal('lunch')">重抽</button>
-            <button class="btn-remove" id="lunchRemove" onclick="toggleRemove('lunch')">移除</button>
-          </div>
-        </div>
-
-        <div class="meal-slot">
-          <div class="meal-label">晚餐</div>
-          <div class="meal-card" id="dinnerCard">
-            <span style="color: #999;">尚未選擇</span>
-          </div>
-          <div class="meal-buttons">
-            <button class="btn-redraw" onclick="redrawMeal('dinner')">重抽</button>
-            <button class="btn-remove" id="dinnerRemove" onclick="toggleRemove('dinner')">移除</button>
-          </div>
-        </div>
-      </div>
-      
-      <button class="btn-view-result" onclick="checkAndViewResult()">查看結果</button>
+    <div class="loading" id="loading">
+      <span class="spinner"></span>
+      正在前往占卜世界...
     </div>
 
-    <!-- 第4頁：占卜結果 -->
-    <div id="page4" class="page">
-      <div class="result-page">
-        <div id="captureArea" class="result-box" style="background: rgba(90, 62, 43, 0.9); border-radius: 20px; padding: 40px; max-width: 600px; margin: 40px auto; box-shadow: 0 8px 32px rgba(0,0,0,0.3);">
-        <h2 class="result-title-white" style="font-size: 36px; margin-bottom: 40px;">您的食物占卜結果</h2>
-        
-        <div class="result-meals" id="resultMealsDisplay" style="margin-bottom: 40px;">
-          <!-- 動態生成 -->
-        </div>
-        
-        <div class="fortune-text" id="fortuneText" style="font-size: 18px; line-height: 2.2; white-space: pre-wrap;">
-          <!-- 動態生成 -->
-        </div>
-
-        <div style="text-align: center; margin-top: 40px; color: #ffd700; font-size: 14px;">
-          🌟 食物占卜 🔮 | 今天吃什麼，由宇宙決定
-        </div>
-      </div>
-          
-          <div class="result-actions">
-            <button class="btn-share" onclick="shareResult()">分享結果</button>
-            <button class="btn-save" onclick="saveResult()">儲存結果</button>
-          </div>
-
-          <div style="text-align: center; margin: 60px 0 20px;">
-            <button class="btn" onclick="goToPage(1)" style="padding: 20px 50px; font-size: 1.5em; background: linear-gradient(to bottom, #ffcc80, #ffab40);">
-              🏠 回首頁，再占卜一次！
-            </button>
-            <p style="margin-top: 20px; color: #a1887f; font-size: 1.1em;">
-              今天的食物運勢已記錄在宇宙中 🌌<br>
-              明天再來，看看有什麼新驚喜～
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- 登入 Modal -->
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <h3 class="modal-title">會員登入</h3>
-      <div class="form-group">
-        <label>帳號</label>
-        <input type="text" id="loginUsername" placeholder="請輸入帳號">
-      </div>
-      <div class="form-group">
-        <label>密碼</label>
-        <input type="password" id="loginPassword" placeholder="請輸入密碼">
-      </div>
-      <button class="btn-submit" onclick="handleLogin()">登入</button>
-      <div class="modal-footer">
-        還沒有帳號？<a onclick="closeModal('loginModal'); showRegister()">立即註冊</a><br>
-        <a onclick="closeModal('loginModal')">關閉</a>
-      </div>
+    <div class="footer">
+      📱 支援電腦與手機瀏覽<br>
+      🎨 每次占卜都有新驚喜<br>
+      💾 可儲存歷史記錄
     </div>
   </div>
-
-  <!-- 註冊 Modal -->
-  <div id="registerModal" class="modal">
-    <div class="modal-content">
-      <h3 class="modal-title">會員註冊</h3>
-      <div class="form-group">
-        <label>帳號</label>
-        <input type="text" id="registerUsername" placeholder="請輸入帳號">
-      </div>
-      <div class="form-group">
-        <label>密碼</label>
-        <input type="password" id="registerPassword" placeholder="請輸入密碼">
-      </div>
-      <button class="btn-submit" onclick="handleRegister()">註冊</button>
-      <div class="modal-footer">
-        已有帳號？<a onclick="closeModal('registerModal'); showLogin()">立即登入</a><br>
-        <a onclick="closeModal('registerModal')">關閉</a>
-      </div>
-    </div>
-  </div>
-
-    <!-- 分享 Modal -->
-  <div id="shareModal" class="modal">
-    <div class="modal-content" style="max-width: 380px; text-align: center;">
-      <h3 class="modal-title">分享你的占卜結果</h3>
-      <p style="color: #6b4e3d; margin: 20px 0; font-size: 15px;">
-        將今天的食物運勢分享給朋友吧～
-      </p>
-
-      <!-- 複製連結按鈕 -->
-      <button class="btn-primary" onclick="copyPageLink()" style="width: 80%; margin: 15px auto; padding: 12px;">
-        📋 複製網站連結
-      </button>
-
-      <button class="btn-primary" onclick="downloadResultImage()" style="width: 80%; margin: 15px auto; padding: 12px; background: #ffd43b; color: #5a3e2b;">
-        🖼️ 下載結果圖卡
-      </button>
-
-      <div style="margin: 30px 0;">
-        <span style="color: #8b6f47; font-size: 14px;">或直接分享到</span>
-      </div>
-      <!-- 社群圖標（重點：不要包在 .result-actions 裡） -->
-    <div style="display: flex; justify-content: center; gap: 30px; margin: 20px 0;">
-      <a onclick="shareToIG()" style="cursor: pointer;">
-        <img src="https://www.google.com/s2/favicons?domain=instagram.com&sz=128" width="50" alt="Instagram">
-      </a>
-      <a onclick="shareToFB()" style="cursor: pointer;">
-        <img src="https://www.google.com/s2/favicons?domain=facebook.com&sz=128" width="50" alt="Facebook">
-      </a>
-      <a onclick="shareToX()" style="cursor: pointer;">
-        <img src="https://www.google.com/s2/favicons?domain=x.com&sz=128" width="50" alt="X">
-      </a>
-    </div>
-
-    <!-- 關閉按鈕（一定要有！） -->
-    <div class="modal-footer" style="margin-top: 30px;">
-      <a onclick="closeModal('shareModal')" style="color: #8b6f47; cursor: pointer;">關閉</a>
-    </div>
-    </div>
-  </div>
-
-      <!-- 歷史紀錄 Modal -->
-      <div id="historyModal" class="modal">
-        <div class="modal-content" style="max-width: 900px; width: 95%; max-height: 90vh; overflow-y: auto; background: rgba(255,255,252,0.95); border-radius: 32px; box-shadow: 0 20px 50px rgba(161,117,87,0.25); padding: 0;">
-          
-          <!-- 溫柔飄浮背景裝飾 -->
-          <div class="deco deco1">📚</div>
-          <div class="deco deco2">🕯️</div>
-          <div class="deco deco3">🌸</div>
-          <div class="deco deco4">☕</div>
-
-          <div class="main-container" style="padding: 20px 0; position: relative;">
-            <div class="container" style="box-shadow: none; background: transparent; padding: 20px;">
-              <h1>占卜紀錄查詢</h1>
-              <p class="subtitle">輕鬆回顧你的美食命運之旅<span class="food-deco">🔮</span></p>
-
-              <div class="search-section">
-                <div class="input-group">
-                  <label>目前登入會員</label>
-                  <div id="currentMemberDisplay" style="padding: 16px 22px; background: rgba(255,255,255,0.8); border: 2px solid #d7ccc8; border-radius: 25px; font-size: 1.2em; color: #6d4c41; text-align: center;">載入中...</div>
-                </div>
-
-                <div class="filter-group">
-                  <label for="meal-filter">篩選顯示餐別</label>
-                  <select id="meal-filter">
-                    <option value="">顯示全部三餐紀錄</option>
-                    <option value="breakfast">只顯示有早餐的紀錄</option>
-                    <option value="lunch">只顯示有午餐的紀錄</option>
-                    <option value="dinner">只顯示有晚餐的紀錄</option>
-                  </select>
-                </div>
-              </div>
-
-              <button class="btn" onclick="loadHistoryRecords()">🔍 查看我的紀錄</button>
-
-              <div class="records" id="records-area">
-                <div class="no-record">
-                  <span class="food-deco">🍵</span><br>
-                  還沒有找到紀錄呢～<br>
-                  快去占卜幾次，讓我們一起記錄那些溫暖的時刻吧！
-                  <span class="food-deco">📖</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-      <!-- 社群圖標 -->
-      <div style="display: flex; justify-content: center; gap: 30px;">
-        <a onclick="shareToIG()" style="cursor: pointer;">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="50" alt="Instagram">
-        </a>
-        <a onclick="shareToFB()" style="cursor: pointer;">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="50" alt="Facebook">
-        </a>
-        <a onclick="shareToX()" style="cursor: pointer;">
-          <img src="https://www.google.com/s2/favicons?domain=x.com&sz=128" width="50" alt="X">
-        </a>
-      </div>
-
-    <div style="text-align: center; padding: 10px 20px; background: rgba(255,255,255,0.5);">
-      <a onclick="closeModal('historyModal')" style="color: #8d5524; cursor: pointer; text-decoration: underline; font-size: 1.1em;">關閉視窗</a>
-    </div>
-  </div>
-</div>
 
   <script>
-  // ===== 全域變數 =====
-    let allCards = [];
-    let selectedMeals = {
-      breakfast: null,
-      lunch: null,
-      dinner: null
-    };
-    let removedMeals = {
-      breakfast: false,
-      lunch: false,
-      dinner: false
-    };
-    let currentUser = null;
+    // ⚠️ 重要：請將下方網址替換成你的 Google Apps Script Web App 網址
+    const APP_URL = 'https://script.google.com/macros/s/AKfycbz5FzbeG6AaGgSZfMGxLInM2v2I5W3YOk9z0_WtkS6o3sPe-nWf2uiu5_dX8TXY4Iky1A/exec';
 
-    // ===== API 呼叫封裝 =====
-    async function callApi(functionName, params = {}) {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({ functionName, ...params }),
-        headers: { 'Content-Type': 'application/json' }
-      });
-      return await response.json();
-    }
-
-    // ===== 抽卡 =====
-    async function loadCards() {
-      const result = await callApi('drawRandomCards');
-      allCards = result;
-      renderCards();
-    }
-
-    // ===== 登入 =====
-    async function handleLogin() {
-      const username = document.getElementById('loginUsername').value.trim();
-      const password = document.getElementById('loginPassword').value;
-      if (!username || !password) return alert('請填寫完整');
-
-      const res = await callApi('loginUser', { username, password });
-      if (res.success) {
-        currentUser = res;
-        alert('登入成功！歡迎 ' + res.username);
-        closeModal('loginModal');
-      } else {
-        alert(res.message);
-      }
-    }
-
-    // ===== 註冊 =====
-    async function handleRegister() {
-      const username = document.getElementById('registerUsername').value.trim();
-      const password = document.getElementById('registerPassword').value;
-      if (!username || !password) return alert('請填寫完整');
-
-      const res = await callApi('registerUser', { username, password });
-      if (res.success) {
-        alert('註冊成功！請登入');
-        closeModal('registerModal');
-        showLogin();
-      } else {
-        alert(res.message);
-      }
-    }
-
-    // ===== 儲存結果 =====
-    async function saveResult() {
-      if (!currentUser) {
-        showLogin();
-        return;
-      }
-      const res = await callApi('saveFortuneResult', {
-        userId: currentUser.userId,
-        breakfast: selectedMeals.breakfast,
-        lunch: selectedMeals.lunch,
-        dinner: selectedMeals.dinner
-      });
-      alert(res.success ? '結果已儲存！' : '儲存失敗');
-    }
-
-    // ===== 歷史查詢 =====
-    async function loadHistoryRecords() {
-      if (!currentUser) return;
-      const records = await callApi('getUserHistory', { userId: currentUser.userId });
-      console.log('讀取到的紀錄:', records);
-      renderHistoryRecords(records || []);
-    }
-
-    // Emoji 對應表
-    const emojiMap = {
-      'icon-egg-roll': '🥙',
-      'icon-oatmeal': '🥣',
-      'icon-beef-noodle': '🍜',
-      'icon-salad': '🥗',
-      'icon-boba-tea': '🧋',
-      'icon-braised-pork': '🍛',
-      'icon-coffee': '☕',
-      'icon-oden': '🍢',
-      'icon-fried-chicken': '🍗',
-      'icon-onigiri': '🍙',
-      'icon-hotpot': '🍲',
-      'icon-yogurt': '🍨',
-      'icon-toast': '🍞',
-      'icon-pasta': '🍝',
-      'icon-fruit': '🍎',
-      'icon-bibimbap': '🍚',
-      'icon-donut': '🍩',
-      'icon-rice-bowl': '🍱',
-      'icon-iced-coffee': '🧊',
-      'icon-miso-soup': '🍵'
-    };
-
-    // ===== 頁面切換 =====
-    function goToPage(pageNum) {
-      if (pageNum === 3 || pageNum === 4) {
-        const selectedCount = Object.keys(selectedMeals).filter(key => selectedMeals[key] !== null && !removedMeals[key]).length;
-        if (selectedCount === 0) {
-          alert('請至少選擇一餐喔～');
-          return;
-        }
-      }
-
-      document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-      });
-      document.getElementById('page' + pageNum).classList.add('active');
+    function redirectToApp(event) {
+      event.preventDefault();
       
-      if (pageNum === 2) {
-        setTimeout(() => {
-          loadCards();
-        }, 300);
-      }
-      
-      if (pageNum === 4) {
-        renderResultPage();
-      }
-    }
-
-    function checkAndViewResult() {
-      const selectedCount = Object.keys(selectedMeals).filter(key => selectedMeals[key] !== null && !removedMeals[key]).length;
-      if (selectedCount === 0) {
-        alert('請至少選擇一餐才能查看結果喔～');
-        return;
-      }
-      goToPage(4);
-    }
-
-    // ===== 載入卡牌（防 google 未載入） =====
-    // function loadCards() {
-    //   if (typeof google === 'undefined' || !google.script) {
-    //     setTimeout(loadCards, 200);
-    //     return;
-    //   }
-
-    //   google.script.run
-    //     .withSuccessHandler(function(foods) {
-    //       allCards = foods;
-    //       renderCards();
-    //     })
-    //     .withFailureHandler(function(error) {
-    //       alert('載入食物資料失敗：' + (error.message || error));
-    //     })
-    //     .drawRandomCards();
-    // }
-
-    // ===== 渲染卡牌 =====
-    function renderCards() {
-      const grid = document.getElementById('cardsGrid');
-      grid.innerHTML = '';
-      
-      allCards.forEach((food, index) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.setAttribute('data-index', index);
-        
-        card.innerHTML = `
-          <div class="card-inner">
-            <div class="card-face card-back">
-              <div style="font-size:80px;">🍽️</div>
-              <div style="font-size:14px; margin-top:10px; color:rgba(255,255,255,0.8);">食物占卜卡</div>
-            </div>
-            <div class="card-face card-front">
-              <div class="card-emoji">${emojiMap[food.image_ref] || '🍴'}</div>
-              <div class="card-name">${food.food_name}</div>
-            </div>
-          </div>
-        `;
-        
-        // 點擊事件
-        card.onclick = function() {
-          if (card.classList.contains('flipped')) return; // 已翻過就不能再點
-          
-          card.classList.add('flipped');
-          
-          // 翻牌動畫結束後才算選取
-          setTimeout(() => {
-            selectCard(food, index);
-          }, 600);
-        };
-        
-        grid.appendChild(card);
-      });
-    }
-
-    // ===== 選擇卡牌 =====
-    function selectCard(food, index) {
-      const selectedCount = Object.keys(selectedMeals).filter(key => selectedMeals[key] !== null).length;
-      
-      if (selectedCount >= 3) {
-        alert('三餐已選滿！請按「挑選卡片」繼續～');
-        // 可選：把剛翻的牌翻回去
-        document.querySelector(`[data-index="${index}"]`).classList.remove('flipped');
-        return;
-      }
-      
-      // 自動分配到下一個空位
-      let mealType = null;
-      if (!selectedMeals.breakfast) mealType = 'breakfast';
-      else if (!selectedMeals.lunch) mealType = 'lunch';
-      else if (!selectedMeals.dinner) mealType = 'dinner';
-      
-      selectedMeals[mealType] = food;
-      updateMealCard(mealType, food);
-      
-      const mealName = mealType === 'breakfast' ? '早餐' : mealType === 'lunch' ? '午餐' : '晚餐';
-      alert(`已為 ${mealName} 選擇：${food.food_name} ✨`);
-      
-      // 檢查是否選滿三張
-      if (Object.keys(selectedMeals).filter(key => selectedMeals[key] !== null).length === 3) {
-        setTimeout(() => {
-          if (confirm('三餐都選好了！要立刻查看挑選結果嗎？')) {
-            goToPage(3);
-          }
-        }, 300);
-      }
-    }
-
-    // ===== 更新第3頁顯示 =====
-    function updateMealCard(mealType, food) {
-      const cardElement = document.getElementById(mealType + 'Card');
-      if (food) {
-        cardElement.innerHTML = `
-          <div class="card-emoji">${emojiMap[food.image_ref] || '🍴'}</div>
-          <div class="card-name">${food.food_name}</div>
-        `;
-        cardElement.classList.remove('empty');
-      } else {
-        cardElement.innerHTML = '<span style="color: #999;">尚未選擇</span>';
-        cardElement.classList.add('empty');
-      }
-    }
-
-    // ===== 洗牌 =====
-    function shuffleCards() {
-      selectedMeals = { breakfast: null, lunch: null, dinner: null };
-      removedMeals = { breakfast: false, lunch: false, dinner: false };
-      
-      ['breakfast', 'lunch', 'dinner'].forEach(type => {
-        updateMealCard(type, null);
-        const btn = document.getElementById(type + 'Remove');
-        if (btn) {
-          btn.textContent = '移除';
-          btn.className = 'btn-remove';
-        }
-      });
-      
-      loadCards();
-      alert('牌已重新洗好！請開始抽卡🔮');
-    }
-
-    // ===== 重抽 =====
-    function redrawMeal(mealType) {
-      selectedMeals[mealType] = null;
-      updateMealCard(mealType, null);
-      goToPage(2);
-      const mealName = mealType === 'breakfast' ? '早餐' : mealType === 'lunch' ? '午餐' : '晚餐';
-      alert(`請重新抽取${mealName}～`);
-    }
-
-    // ===== 移除/回復 =====
-    function toggleRemove(mealType) {
-      const button = document.getElementById(mealType + 'Remove');
-      const cardElement = document.getElementById(mealType + 'Card');
-      const label = cardElement.previousElementSibling;
-      
-      if (removedMeals[mealType]) {
-        removedMeals[mealType] = false;
-        button.textContent = '移除';
-        button.className = 'btn-remove';
-        cardElement.style.display = 'flex';
-        label.style.display = 'block';
-      } else {
-        removedMeals[mealType] = true;
-        button.textContent = '回復';
-        button.className = 'btn-restore';
-        cardElement.style.display = 'none';
-        label.style.display = 'none';
-      }
-    }
-
-    // ===== 渲染結果頁面 =====
-    function renderResultPage() {
-      const resultDisplay = document.getElementById('resultMealsDisplay');
-      const fortuneText = document.getElementById('fortuneText');
-      
-      resultDisplay.innerHTML = '';
-      let fortunes = [];
-      
-      const mealTypes = ['breakfast', 'lunch', 'dinner'];
-      const mealLabels = { breakfast: '早餐', lunch: '午餐', dinner: '晚餐' };
-      
-      mealTypes.forEach(mealType => {
-        if (!removedMeals[mealType] && selectedMeals[mealType]) {
-          const food = selectedMeals[mealType];
-          
-          resultDisplay.innerHTML += `
-            <div class="result-meal-item">
-              <div class="result-card">
-                <div class="card-emoji">${emojiMap[food.image_ref] || '🍴'}</div>
-              </div>
-              <div class="result-meal-name">${mealLabels[mealType]}</div>
-              <div class="result-food-name">${food.food_name}</div>
-            </div>
-          `;
-          
-          fortunes.push('<strong>' + food.fortune_label + '</strong>：' + food.interpretation + '<br>' + food.lucky_advice);
-        }
-      });
-      
-      fortuneText.innerHTML = fortunes.join('<br><br>') || '今天沒有選擇任何餐點喔～';
-    }
-
-    // ===== 其他功能 =====
-    // ===== 分享結果 Modal =====
-function shareResult() {
-  document.getElementById('shareModal').classList.add('active');
-}
-
-// 複製當前頁面連結
-function copyPageLink() {
-  const url = window.location.href;
-  
-  navigator.clipboard.writeText(url).then(function() {
-    alert('🔗 網站連結已複製到剪貼簿！\n快去貼給朋友一起玩～');
-  }).catch(function() {
-    // 舊瀏覽器備案
-    const textArea = document.createElement('textarea');
-    textArea.value = url;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textArea);
-    alert('🔗 網站連結已複製！');
-  });
-}
-
-// 分享到 IG（開啟 App 或網頁）
-function shareToIG() {
-  const url = encodeURIComponent(window.location.href);
-  const text = encodeURIComponent('我剛用食物占卜抽到今天的運勢！超準的～你也來試試！🍜🔮');
-  window.open(`https://www.instagram.com/?url=${url}&text=${text}`, '_blank');
-}
-
-// 分享到 Facebook
-function shareToFB() {
-  const url = encodeURIComponent(window.location.href);
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
-}
-
-// 分享到 X (Twitter)
-function shareToX() {
-  const url = encodeURIComponent(window.location.href);
-  const text = encodeURIComponent('今天用食物占卜抽三餐，結果超有趣！🍲 你也來玩～');
-  window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
-}
-
-    // function saveResult() {
-    //   if (!currentUser) {
-    //     showLogin();
-    //     alert('請先登入才能儲存結果喔～');
-    //     return;
-    //   }
-      
-    //   google.script.run
-    //     .withSuccessHandler(function(res) {
-    //       alert(res.success ? '結果已儲存！' : '儲存失敗');
-    //     })
-    //     .saveFortuneResult(currentUser.userId, selectedMeals.breakfast, selectedMeals.lunch, selectedMeals.dinner);
-    // }
-
-    // Modal
-    function showLogin() { document.getElementById('loginModal').classList.add('active'); }
-    function showRegister() { document.getElementById('registerModal').classList.add('active'); }
-    function showHistory() {
-      if (!currentUser) {
-        alert('請先登入才能查看歷史紀錄喔～');
-        showLogin();
+      // 檢查是否已設定正確的網址
+      if (APP_URL.includes('YOUR_SCRIPT_ID')) {
+        alert('⚠️ 請先在程式碼中設定你的 Google Apps Script 網址！\n\n請查看 index.html 第 290 行');
         return;
       }
 
-      console.log('目前登入 userId:', currentUser.userId);
+      // 顯示載入動畫
+      document.getElementById('loading').classList.add('active');
+      document.getElementById('startBtn').style.opacity = '0.6';
+      document.getElementById('startBtn').style.pointerEvents = 'none';
 
-      // 顯示目前登入者
-      document.getElementById('currentMemberDisplay').textContent = currentUser.username;
-
-      // 清空舊資料
-      document.getElementById('records-area').innerHTML = `
-        <div class="no-record">
-          <span class="food-deco">⏳</span><br>
-          正在喚醒你的占卜記憶...<br>
-          請稍等一下～
-        </div>
-      `;
-
-      document.getElementById('historyModal').classList.add('active');
-      
-      // 自動載入一次
-      loadHistoryRecords();
+      // 0.5 秒後跳轉
+      setTimeout(() => {
+        window.location.href = APP_URL;
+      }, 500);
     }
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    // function handleLogin() {
-    //   const username = document.getElementById('loginUsername').value.trim();
-    //   const password = document.getElementById('loginPassword').value;
-    //   if (!username || !password) return alert('請填寫完整');
-      
-    //   google.script.run
-    //     .withSuccessHandler(res => {
-    //       if (res.success) {
-    //         currentUser = res;
-    //         alert('登入成功！歡迎 ' + res.username);
-    //         closeModal('loginModal');
-    //       } else alert(res.message);
-    //     })
-    //     .loginUser(username, password);
-    // }
-
-    // function loadHistoryRecords() {
-    //   if (!currentUser) return;
-
-    //   google.script.run
-    //     .withSuccessHandler(function(records) {
-    //       renderHistoryRecords(records);
-    //       console.log('讀取到的紀錄:', records);
-    //     })
-    //     .withFailureHandler(function(error) {
-    //       document.getElementById('records-area').innerHTML = `
-    //         <div class="no-record">
-    //           <span class="food-deco">😿</span><br>
-    //           載入失敗：${error.message || error}<br>
-    //           請再試一次或檢查網路～
-    //         </div>
-    //       `;
-    //     })
-    //     .getUserHistory(currentUser.userId);
-    // }
-
-    function renderHistoryRecords(records) {
-  const area = document.getElementById('records-area');
-  if (!records || !Array.isArray(records)) {
-    area.innerHTML = `
-      <div class="no-record">
-        <span class="food-deco">😿</span><br>
-        載入失敗或無紀錄～<br>
-        請確認是否有儲存過占卜結果，或再試一次！
-      </div>
-    `;
-    return;
-  }
-
-  const mealFilter = document.getElementById('meal-filter').value;
-
-  // 篩選：根據選擇的餐別
-  const filtered = records.filter(record => {
-    if (!mealFilter) return true;
-    return record[mealFilter] !== undefined && record[mealFilter] !== null;
-  });
-
-  if (filtered.length === 0) {
-    const mealName = mealFilter === 'breakfast' ? '早餐' : 
-                     mealFilter === 'lunch' ? '午餐' : '晚餐';
-    area.innerHTML = `
-      <div class="no-record">
-        <span class="food-deco">🌙</span><br>
-        目前沒有${mealFilter ? '包含「' + mealName + '」的' : ''}占卜紀錄～<br>
-        快去多占卜幾次吧！我們會幫你記錄每一餐的美好
-        <span class="food-deco">✨</span>
-      </div>
-    `;
-    return;
-  }
-
-  let tableHTML = `
-    <div class="records-header">
-      <span>找到 <strong>${filtered.length}</strong> 筆溫暖紀錄</span>
-      <span class="record-count">最新優先</span>
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th>占卜日期</th>
-          <th>三餐組合</th>
-          <th>運勢標語</th>
-          <th>詳細解讀</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-
-  filtered.sort((a, b) => b.date.localeCompare(a.date));
-
-  filtered.forEach(record => {
-    const meals = [];
-    ['breakfast', 'lunch', 'dinner'].forEach(meal => {
-      const mealName = meal === 'breakfast' ? '早餐' : meal === 'lunch' ? '午餐' : '晚餐';  // 加這行定義 mealName
-      if (record[meal] && record[meal].food_name) {
-        meals.push(`<strong>${mealName}</strong>：${record[meal].food_name}`);
-      } else {
-        meals.push(`<strong>${mealName}</strong>：尚未選擇`);
+    // 如果網址參數中有 direct=true，直接跳轉
+    if (window.location.search.includes('direct=true')) {
+      if (!APP_URL.includes('YOUR_SCRIPT_ID')) {
+        window.location.href = APP_URL;
       }
-    });
-
-    const labels = ['breakfast', 'lunch', 'dinner']
-      .map(meal => record[meal]?.fortune_label || '')
-      .filter(l => l)
-      .join(' ⋅ ');
-
-    tableHTML += `
-      <tr>
-        <td>${record.date}</td>
-        <td>${meals.join('<br>')}</td>
-        <td>${labels || '無標語'}</td>
-        <td style="font-size:0.9em; line-height:1.6;">${labels ? '運勢偏向：' + labels : '尚未解讀'}</td>
-      </tr>
-    `;
-  });
-
-  tableHTML += `
-      </tbody>
-    </table>
-  `;
-  area.innerHTML = tableHTML;
-}
-
-    // 心情圖示（可擴充）
-    function getMoodIcon(label) {
-      const map = {
-        '清爽健康': '🌿',
-        '豐盛飽足': '🍲',
-        '重口味刺激': '🌶️',
-        '隨機混沌': '🎲'
-      };
-      return Object.entries(map).find(([k]) => label.includes(k))?.[1] || '🍴';
     }
-
-    // function handleRegister() {
-    //   const username = document.getElementById('registerUsername').value.trim();
-    //   const password = document.getElementById('registerPassword').value;
-    //   if (!username || !password) return alert('請填寫完整');
-      
-    //   google.script.run
-    //     .withSuccessHandler(res => {
-    //       if (res.success) {
-    //         alert('註冊成功！請登入');
-    //         closeModal('registerModal');
-    //         showLogin();
-    //       } else alert(res.message);
-    //     })
-    //     .registerUser(username, password);
-    // }
-
-    // ===== 下載結果圖卡 =====
-    function downloadResultImage() {
-      // 只隱藏第4頁的動作按鈕（#resultActions 或 .result-actions）
-      const page4Actions = document.querySelector('#page4 .result-actions');  // 精準指定第4頁
-      if (page4Actions) page4Actions.style.display = 'none';
-
-      html2canvas(document.getElementById('captureArea'), {
-        scale: 2,
-        backgroundColor: null,
-        logging: false,
-        useCORS: true
-      }).then(canvas => {
-        if (page4Actions) page4Actions.style.display = 'flex';
-
-        const link = document.createElement('a');
-        link.download = '食物占卜結果_' + new Date().toISOString().slice(0,10) + '.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-
-        alert('🎉 美美圖卡已下載！去分享吧～');
-      }).catch(err => {
-        if (page4Actions) page4Actions.style.display = 'flex';
-        alert('產生失敗，再試一次');
-        console.error(err);
-      });
-    }
-</script>
+  </script>
 </body>
 </html>
