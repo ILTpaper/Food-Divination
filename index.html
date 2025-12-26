@@ -1101,22 +1101,22 @@
     }
 
     // ===== 載入卡牌（防 google 未載入） =====
-    function loadCards() {
-      if (typeof google === 'undefined' || !google.script) {
-        setTimeout(loadCards, 200);
-        return;
-      }
+    // function loadCards() {
+    //   if (typeof google === 'undefined' || !google.script) {
+    //     setTimeout(loadCards, 200);
+    //     return;
+    //   }
 
-      google.script.run
-        .withSuccessHandler(function(foods) {
-          allCards = foods;
-          renderCards();
-        })
-        .withFailureHandler(function(error) {
-          alert('載入食物資料失敗：' + (error.message || error));
-        })
-        .drawRandomCards();
-    }
+    //   google.script.run
+    //     .withSuccessHandler(function(foods) {
+    //       allCards = foods;
+    //       renderCards();
+    //     })
+    //     .withFailureHandler(function(error) {
+    //       alert('載入食物資料失敗：' + (error.message || error));
+    //     })
+    //     .drawRandomCards();
+    // }
 
     // ===== 渲染卡牌 =====
     function renderCards() {
@@ -1329,19 +1329,19 @@ function shareToX() {
   window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
 }
 
-    function saveResult() {
-      if (!currentUser) {
-        showLogin();
-        alert('請先登入才能儲存結果喔～');
-        return;
-      }
+    // function saveResult() {
+    //   if (!currentUser) {
+    //     showLogin();
+    //     alert('請先登入才能儲存結果喔～');
+    //     return;
+    //   }
       
-      google.script.run
-        .withSuccessHandler(function(res) {
-          alert(res.success ? '結果已儲存！' : '儲存失敗');
-        })
-        .saveFortuneResult(currentUser.userId, selectedMeals.breakfast, selectedMeals.lunch, selectedMeals.dinner);
-    }
+    //   google.script.run
+    //     .withSuccessHandler(function(res) {
+    //       alert(res.success ? '結果已儲存！' : '儲存失敗');
+    //     })
+    //     .saveFortuneResult(currentUser.userId, selectedMeals.breakfast, selectedMeals.lunch, selectedMeals.dinner);
+    // }
 
     // Modal
     function showLogin() { document.getElementById('loginModal').classList.add('active'); }
@@ -1374,41 +1374,41 @@ function shareToX() {
     }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    function handleLogin() {
-      const username = document.getElementById('loginUsername').value.trim();
-      const password = document.getElementById('loginPassword').value;
-      if (!username || !password) return alert('請填寫完整');
+    // function handleLogin() {
+    //   const username = document.getElementById('loginUsername').value.trim();
+    //   const password = document.getElementById('loginPassword').value;
+    //   if (!username || !password) return alert('請填寫完整');
       
-      google.script.run
-        .withSuccessHandler(res => {
-          if (res.success) {
-            currentUser = res;
-            alert('登入成功！歡迎 ' + res.username);
-            closeModal('loginModal');
-          } else alert(res.message);
-        })
-        .loginUser(username, password);
-    }
+    //   google.script.run
+    //     .withSuccessHandler(res => {
+    //       if (res.success) {
+    //         currentUser = res;
+    //         alert('登入成功！歡迎 ' + res.username);
+    //         closeModal('loginModal');
+    //       } else alert(res.message);
+    //     })
+    //     .loginUser(username, password);
+    // }
 
-    function loadHistoryRecords() {
-      if (!currentUser) return;
+    // function loadHistoryRecords() {
+    //   if (!currentUser) return;
 
-      google.script.run
-        .withSuccessHandler(function(records) {
-          renderHistoryRecords(records);
-          console.log('讀取到的紀錄:', records);
-        })
-        .withFailureHandler(function(error) {
-          document.getElementById('records-area').innerHTML = `
-            <div class="no-record">
-              <span class="food-deco">😿</span><br>
-              載入失敗：${error.message || error}<br>
-              請再試一次或檢查網路～
-            </div>
-          `;
-        })
-        .getUserHistory(currentUser.userId);
-    }
+    //   google.script.run
+    //     .withSuccessHandler(function(records) {
+    //       renderHistoryRecords(records);
+    //       console.log('讀取到的紀錄:', records);
+    //     })
+    //     .withFailureHandler(function(error) {
+    //       document.getElementById('records-area').innerHTML = `
+    //         <div class="no-record">
+    //           <span class="food-deco">😿</span><br>
+    //           載入失敗：${error.message || error}<br>
+    //           請再試一次或檢查網路～
+    //         </div>
+    //       `;
+    //     })
+    //     .getUserHistory(currentUser.userId);
+    // }
 
     function renderHistoryRecords(records) {
   const area = document.getElementById('records-area');
@@ -1508,21 +1508,21 @@ function shareToX() {
       return Object.entries(map).find(([k]) => label.includes(k))?.[1] || '🍴';
     }
 
-    function handleRegister() {
-      const username = document.getElementById('registerUsername').value.trim();
-      const password = document.getElementById('registerPassword').value;
-      if (!username || !password) return alert('請填寫完整');
+    // function handleRegister() {
+    //   const username = document.getElementById('registerUsername').value.trim();
+    //   const password = document.getElementById('registerPassword').value;
+    //   if (!username || !password) return alert('請填寫完整');
       
-      google.script.run
-        .withSuccessHandler(res => {
-          if (res.success) {
-            alert('註冊成功！請登入');
-            closeModal('registerModal');
-            showLogin();
-          } else alert(res.message);
-        })
-        .registerUser(username, password);
-    }
+    //   google.script.run
+    //     .withSuccessHandler(res => {
+    //       if (res.success) {
+    //         alert('註冊成功！請登入');
+    //         closeModal('registerModal');
+    //         showLogin();
+    //       } else alert(res.message);
+    //     })
+    //     .registerUser(username, password);
+    // }
 
     // ===== 下載結果圖卡 =====
     function downloadResultImage() {
