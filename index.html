@@ -979,6 +979,68 @@
       return await response.json();
     }
 
+    // ===== 抽卡 =====
+    async function loadCards() {
+      const result = await callApi('drawRandomCards');
+      allCards = result;
+      renderCards();
+    }
+
+    // ===== 登入 =====
+    async function handleLogin() {
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      if (!username || !password) return alert('請填寫完整');
+
+      const res = await callApi('loginUser', { username, password });
+      if (res.success) {
+        currentUser = res;
+        alert('登入成功！歡迎 ' + res.username);
+        closeModal('loginModal');
+      } else {
+        alert(res.message);
+      }
+    }
+
+    // ===== 註冊 =====
+    async function handleRegister() {
+      const username = document.getElementById('registerUsername').value.trim();
+      const password = document.getElementById('registerPassword').value;
+      if (!username || !password) return alert('請填寫完整');
+
+      const res = await callApi('registerUser', { username, password });
+      if (res.success) {
+        alert('註冊成功！請登入');
+        closeModal('registerModal');
+        showLogin();
+      } else {
+        alert(res.message);
+      }
+    }
+
+    // ===== 儲存結果 =====
+    async function saveResult() {
+      if (!currentUser) {
+        showLogin();
+        return;
+      }
+      const res = await callApi('saveFortuneResult', {
+        userId: currentUser.userId,
+        breakfast: selectedMeals.breakfast,
+        lunch: selectedMeals.lunch,
+        dinner: selectedMeals.dinner
+      });
+      alert(res.success ? '結果已儲存！' : '儲存失敗');
+    }
+
+    // ===== 歷史查詢 =====
+    async function loadHistoryRecords() {
+      if (!currentUser) return;
+      const records = await callApi('getUserHistory', { userId: currentUser.userId });
+      console.log('讀取到的紀錄:', records);
+      renderHistoryRecords(records || []);
+    }
+
     // Emoji 對應表
     const emojiMap = {
       'icon-egg-roll': '🥙',
