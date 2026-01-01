@@ -125,48 +125,57 @@
   </div>
 
   <script>
-    // 初始化
+    // ===== 頁面載入時自動初始化 =====
+    function initPage() {
+      loadHistory();   // 載入歷史紀錄表格
+      loadStats();     // 載入統計圖表
+    }
+
+    // 頁面載入完成後自動執行
+    window.onload = function() {
+      initPage();
+    };
     window.onload = initPage;
 
     const API_URL = 'https://script.google.com/macros/s/AKfycbxWzPhSIzC42hS8a_kIypbrOHIRnYF_0ChyQV-GK4O7hJZ1DCb_r-VsJMIWkPTRXaxe1g/exec';
     // ===== JSONP 方式呼叫 API（繞過 CORS）=====
     // ===== JSONP 呼叫（一定成功）=====
-async function callApi(functionName, params = {}) {
-  return new Promise((resolve, reject) => {
-    const callbackName = 'jsonp_' + Date.now();
-    const payload = JSON.stringify({ functionName, ...params });
-    const url = `${API_URL}?callback=${callbackName}&payload=${encodeURIComponent(payload)}`;
+    async function callApi(functionName, params = {}) {
+      return new Promise((resolve, reject) => {
+        const callbackName = 'jsonp_' + Date.now();
+        const payload = JSON.stringify({ functionName, ...params });
+        const url = `${API_URL}?callback=${callbackName}&payload=${encodeURIComponent(payload)}`;
 
-    window[callbackName] = function(data) {
-      delete window[callbackName];
-      document.body.removeChild(script);
-      resolve(data);
-    };
+        window[callbackName] = function(data) {
+          delete window[callbackName];
+          document.body.removeChild(script);
+          resolve(data);
+        };
 
-    const script = document.createElement('script');
-    script.src = url;
-    script.onerror = () => {
-      delete window[callbackName];
-      document.body.removeChild(script);
-      reject(new Error('載入失敗'));
-    };
-    document.body.appendChild(script);
-  });
-}
+        const script = document.createElement('script');
+        script.src = url;
+        script.onerror = () => {
+          delete window[callbackName];
+          document.body.removeChild(script);
+          reject(new Error('載入失敗'));
+        };
+        document.body.appendChild(script);
+      });
+    }
 
     // --- 1. 讀取列表 ---
     async function loadHistory() {
-  const result = await callApi('getHistoryAdmin');
-  
-  if (result && Array.isArray(result)) {
-    renderTable(result);
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('tableContainer').style.display = 'block';
-  } else {
-    document.getElementById('tableContainer').innerHTML = '<p style="text-align:center;color:#999;">無紀錄或載入失敗</p>';
-    document.getElementById('loading').style.display = 'none';
-  }
-}
+      const result = await callApi('getHistoryAdmin');
+      
+      if (result && Array.isArray(result)) {
+        renderTable(result);
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('tableContainer').style.display = 'block';
+      } else {
+        document.getElementById('tableContainer').innerHTML = '<p style="text-align:center;color:#999;">無紀錄或載入失敗</p>';
+        document.getElementById('loading').style.display = 'none';
+      }
+    }
 
     function renderTable(data) {
       const tbody = document.getElementById('tableBody');
