@@ -2,6 +2,8 @@
 <html>
 <head>
   <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -17,7 +19,7 @@
       max-width: 1100px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 2fr 1fr; /* 左邊表格，右邊圖表 */
+      grid-template-columns: 2fr 1fr;
       gap: 20px;
     }
 
@@ -29,19 +31,17 @@
       margin-bottom: 20px;
     }
 
-    .full-width { grid-column: 1 / -1; } /* 標題區跨欄 */
+    .full-width { grid-column: 1 / -1; }
 
     h1 { margin: 0; font-size: 24px; color: #2c3e50; display: flex; align-items: center; justify-content: space-between; }
     h2 { font-size: 18px; color: #555; margin-bottom: 15px; border-left: 4px solid #3498db; padding-left: 10px; }
 
-    /* 表格樣式 */
     .table-wrapper { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 14px; }
     th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
     th { background-color: #f8f9fa; font-weight: bold; color: #555; white-space: nowrap; }
     tr:hover { background-color: #f1f8ff; }
 
-    /* 按鈕樣式 */
     .btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; transition: 0.2s; }
     .btn-del { background-color: #ffecec; color: #e74c3c; }
     .btn-del:hover { background-color: #ffcccc; }
@@ -49,12 +49,19 @@
     .btn-add { background-color: #2ecc71; color: white; width: 100%; padding: 10px; margin-top: 10px; font-size: 15px;}
     .btn-add:hover { background-color: #27ae60; }
 
-    /* 輸入框樣式 */
     .form-group { margin-bottom: 12px; }
     .form-group label { display: block; margin-bottom: 5px; font-size: 13px; color: #666; }
     .form-group input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
 
-    /* 響應式調整 */
+    .error-msg {
+      background-color: #ffe6e6;
+      color: #d32f2f;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
     @media (max-width: 768px) {
       .container { grid-template-columns: 1fr; }
     }
@@ -71,19 +78,15 @@
     </div>
 
     <div class="card" style="min-height: 500px;">
-      <h2>歷史紀錄列表</h2>
+      <h2>歷史記錄列表</h2>
       
-      <!-- 載入中提示 -->
       <div id="loading" style="text-align:center; padding:40px; color:#888; font-size:16px;">
-        🍜 資料載入中，請稍等～
+        🍜 資料載入中,請稍等~
       </div>
+
+      <div id="errorMsg" style="display:none;" class="error-msg"></div>
       
-      <!-- 表格容器 -->
       <div class="table-wrapper" id="tableContainer" style="display:none;">
-        <!-- 表格會由 renderTable() 動態填入這裡 -->
-      </div>
-    </div>
-      <div class="table-wrapper">
         <table id="dataTable">
           <thead>
             <tr>
@@ -95,8 +98,7 @@
               <th>晚餐</th>
             </tr>
           </thead>
-          <tbody id="tableBody">
-            </tbody>
+          <tbody id="tableBody"></tbody>
         </table>
       </div>
     </div>
@@ -108,7 +110,7 @@
       </div>
 
       <div class="card">
-        <h2>➕ 手動新增紀錄</h2>
+        <h2>➕ 手動新增記錄</h2>
         <div class="form-group">
           <label>使用者帳號 (User ID)</label>
           <input type="text" id="addUserId" placeholder="例如: admin">
@@ -129,60 +131,88 @@
           <label>晚餐名稱</label>
           <input type="text" id="addDinner" placeholder="輸入食物名稱">
         </div>
-        <button class="btn btn-add" onclick="handleAdd()">新增紀錄</button>
+        <button class="btn btn-add" onclick="handleAdd()">新增記錄</button>
       </div>
     </div>
   </div>
 
   <script>
-    // ===== 頁面載入時自動初始化 =====
-
     const API_URL = 'https://script.google.com/macros/s/AKfycbxWzPhSIzC42hS8a_kIypbrOHIRnYF_0ChyQV-GK4O7hJZ1DCb_r-VsJMIWkPTRXaxe1g/exec';
-    // ===== JSONP 方式呼叫 API（繞過 CORS）=====
-    // ===== JSONP 呼叫（一定成功）=====
+
+    // 改進的 JSONP 呼叫函數
     async function callApi(functionName, params = {}) {
       return new Promise((resolve, reject) => {
-        const callbackName = 'jsonp_' + Date.now();
+        const callbackName = 'jsonp_callback_' + Math.random().toString(36).substring(7) + '_' + Date.now();
         const payload = JSON.stringify({ functionName, ...params });
         const url = `${API_URL}?callback=${callbackName}&payload=${encodeURIComponent(payload)}`;
 
+        // 設置全域回調函數
         window[callbackName] = function(data) {
-          delete window[callbackName];
-          document.body.removeChild(script);
+          cleanup();
           resolve(data);
         };
 
+        // 清理函數
+        function cleanup() {
+          if (window[callbackName]) {
+            delete window[callbackName];
+          }
+          if (script && script.parentNode) {
+            script.parentNode.removeChild(script);
+          }
+        }
+
         const script = document.createElement('script');
         script.src = url;
+        script.async = true;
+        
+        // 超時處理
+        const timeout = setTimeout(() => {
+          cleanup();
+          reject(new Error('請求超時,請檢查網路連線或 API 設定'));
+        }, 15000);
+
         script.onerror = () => {
-          delete window[callbackName];
-          document.body.removeChild(script);
-          reject(new Error('載入失敗'));
+          clearTimeout(timeout);
+          cleanup();
+          reject(new Error('API 載入失敗,請確認 API URL 是否正確'));
         };
+
+        script.onload = () => {
+          clearTimeout(timeout);
+        };
+
         document.body.appendChild(script);
       });
     }
 
-    // --- 1. 讀取列表 ---
+    // 載入歷史記錄
     async function loadHistory() {
-      const result = await callApi('getHistoryAdmin');
-      
-      const tableContainer = document.getElementById('tableContainer');
       const loading = document.getElementById('loading');
+      const errorMsg = document.getElementById('errorMsg');
+      const tableContainer = document.getElementById('tableContainer');
       
-      if (!tableContainer || !loading) {
-        console.error('找不到 tableContainer 或 loading 元素');
-        return;
-      }
+      try {
+        loading.style.display = 'block';
+        errorMsg.style.display = 'none';
+        tableContainer.style.display = 'none';
 
-      if (result && Array.isArray(result) && result.length > 0) {
-        renderTable(result);
+        const result = await callApi('getHistoryAdmin');
+        
+        if (result && Array.isArray(result) && result.length > 0) {
+          renderTable(result);
+          tableContainer.style.display = 'block';
+        } else {
+          document.getElementById('tableBody').innerHTML = 
+            '<tr><td colspan="6" style="text-align:center; padding:40px; color:#999;">目前沒有任何記錄~</td></tr>';
+          tableContainer.style.display = 'block';
+        }
+      } catch (error) {
+        console.error('載入歷史記錄失敗:', error);
+        errorMsg.textContent = '❌ ' + error.message;
+        errorMsg.style.display = 'block';
+      } finally {
         loading.style.display = 'none';
-        tableContainer.style.display = 'block';
-      } else {
-        tableContainer.innerHTML = '<p style="text-align:center;color:#999;padding:40px;">目前沒有任何紀錄～</p>';
-        loading.style.display = 'none';
-        tableContainer.style.display = 'block';
       }
     }
 
@@ -200,34 +230,38 @@
             <td>
               <button class="btn btn-del" onclick="handleDelete('${row.id}')">刪除</button>
             </td>
-            <td>${row.date.split(' ')[0]}</td> <td>${row.user}</td>
-            <td>${row.breakfast}</td>
-            <td>${row.lunch}</td>
-            <td>${row.dinner}</td>
+            <td>${row.date.split(' ')[0]}</td>
+            <td>${row.user}</td>
+            <td>${row.breakfast || '-'}</td>
+            <td>${row.lunch || '-'}</td>
+            <td>${row.dinner || '-'}</td>
           </tr>
         `;
       });
       tbody.innerHTML = html;
     }
 
-    // --- 2. 刪除功能 ---
-    async function deleteRecord(recordId) {
-  if (!confirm('確定要刪除這筆紀錄嗎？此動作無法復原！')) {
-    return;
-  }
+    // 刪除記錄
+    async function handleDelete(recordId) {
+      if (!confirm('確定要刪除這筆記錄嗎?此動作無法復原!')) {
+        return;
+      }
 
-  const res = await callApi('deleteHistoryRecord', { recordId });
-  
-  if (res.success) {
-    alert('紀錄已刪除！');
-    loadHistory();  // 重新載入表格
-    loadStats();    // 更新統計圖表
-  } else {
-    alert('刪除失敗：' + (res.message || '未知錯誤'));
-  }
-}
+      try {
+        const res = await callApi('deleteHistoryRecord', { recordId });
+        
+        if (res.success) {
+          alert('記錄已刪除!');
+          initPage();
+        } else {
+          alert('刪除失敗:' + (res.message || '未知錯誤'));
+        }
+      } catch (error) {
+        alert('刪除失敗:' + error.message);
+      }
+    }
 
-    // --- 3. 新增功能 ---
+    // 新增記錄
     async function handleAdd() {
       const userId = document.getElementById('addUserId').value.trim();
       const date = document.getElementById('addDate').value;
@@ -240,51 +274,59 @@
         return;
       }
 
-      const res = await callApi('adminAddRecord', {
-        userId,
-        date,
-        breakfast,
-        lunch,
-        dinner
-      });
+      try {
+        const res = await callApi('adminAddRecord', {
+          userId,
+          date,
+          breakfast,
+          lunch,
+          dinner
+        });
 
-      if (res.success) {
-        alert('新增成功！');
-        // 清空輸入欄位
-        document.getElementById('addBreakfast').value = '';
-        document.getElementById('addLunch').value = '';
-        document.getElementById('addDinner').value = '';
-        // 重新載入資料
-        loadHistory();
-        loadStats();
-      } else {
-        alert('新增失敗：' + (res.message || '未知錯誤'));
+        if (res.success) {
+          alert('新增成功!');
+          document.getElementById('addBreakfast').value = '';
+          document.getElementById('addLunch').value = '';
+          document.getElementById('addDinner').value = '';
+          initPage();
+        } else {
+          alert('新增失敗:' + (res.message || '未知錯誤'));
+        }
+      } catch (error) {
+        alert('新增失敗:' + error.message);
       }
     }
 
+    // 載入統計資料
     async function loadStats() {
-      const stats = await callApi('getFoodStats');
-      if (stats && Array.isArray(stats)) {
-        renderChart(stats);
-      } else {
-        document.getElementById('statsChart').getContext('2d').clearRect(0, 0, document.getElementById('statsChart').width, document.getElementById('statsChart').height);
-        // 可選：顯示無資料訊息
+      try {
+        const stats = await callApi('getFoodStats');
+        if (stats && Array.isArray(stats) && stats.length > 0) {
+          renderChart(stats);
+        } else {
+          const ctx = document.getElementById('statsChart').getContext('2d');
+          ctx.font = '16px "Noto Sans TC"';
+          ctx.fillStyle = '#999';
+          ctx.textAlign = 'center';
+          ctx.fillText('暫無統計資料', ctx.canvas.width / 2, ctx.canvas.height / 2);
+        }
+      } catch (error) {
+        console.error('載入統計失敗:', error);
       }
     }
 
-    let myChart = null; // 全域變數存圖表實例
+    let myChart = null;
 
     function renderChart(stats) {
       const ctx = document.getElementById('statsChart').getContext('2d');
       
-      // 如果圖表已存在，先銷毀舊的 (避免重疊)
       if (myChart) myChart.destroy();
 
       const labels = stats.map(s => s.name);
       const data = stats.map(s => s.count);
 
       myChart = new Chart(ctx, {
-        type: 'bar', // 長條圖
+        type: 'bar',
         data: {
           labels: labels,
           datasets: [{
@@ -310,25 +352,25 @@
         options: {
           responsive: true,
           plugins: {
-            legend: { display: false } // 不顯示圖例
+            legend: { display: false }
           },
           scales: {
             y: {
               beginAtZero: true,
-              ticks: { stepSize: 1 } // 確保刻度是整數
+              ticks: { stepSize: 1 }
             }
           }
         }
       });
     }
 
-    // 新增這段
     function initPage() {
       loadHistory();
       loadStats();
     }
 
     window.onload = function() {
+      console.log('頁面載入完成,開始初始化...');
       initPage();
     };
   </script>
