@@ -72,10 +72,17 @@
 
     <div class="card" style="min-height: 500px;">
       <h2>歷史紀錄列表</h2>
-      <div class="table-wrapper" id="tableContainer" style="display:none;">
-        <!-- 表格會動態生成 -->
+      
+      <!-- 載入中提示 -->
+      <div id="loading" style="text-align:center; padding:40px; color:#888; font-size:16px;">
+        🍜 資料載入中，請稍等～
       </div>
-      <div id="loading" style="color:#888; text-align:center; padding:20px;">資料讀取中...</div>
+      
+      <!-- 表格容器 -->
+      <div class="table-wrapper" id="tableContainer" style="display:none;">
+        <!-- 表格會由 renderTable() 動態填入這裡 -->
+      </div>
+    </div>
       <div class="table-wrapper">
         <table id="dataTable">
           <thead>
