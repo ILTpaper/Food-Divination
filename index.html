@@ -1016,24 +1016,35 @@
       'icon-miso-soup': '🵵'
     };
     
+    // ===== JSONP 方式呼叫 API（繞過 CORS）=====
     async function callApi(functionName, params = {}) {
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ functionName, ...params })
-        });
+      return new Promise((resolve, reject) => {
+        // 建立唯一 callback 名稱
+        const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
         
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        // 加 callback 到 params
+        const payload = { functionName, ...params };
         
-        return await response.json();
-      } catch (error) {
-        console.error('API 呼叫失敗:', error);
-        alert('連線失敗，請檢查網路或稍後再試');
-        return { success: false, message: '連線錯誤' };
-      }
+        // 建立 script 標籤
+        const script = document.createElement('script');
+        script.src = `${API_URL}?callback=${callbackName}&payload=${encodeURIComponent(JSON.stringify(payload))}`;
+        
+        // 定義全局 callback
+        window[callbackName] = function(data) {
+          delete window[callbackName];
+          document.body.removeChild(script);
+          resolve(data);
+        };
+        
+        // 錯誤處理
+        script.onerror = function() {
+          delete window[callbackName];
+          document.body.removeChild(script);
+          reject(new Error('JSONP 載入失敗'));
+        };
+        
+        document.body.appendChild(script);
+      });
     }
 
     // ===== 頁面切換 =====
