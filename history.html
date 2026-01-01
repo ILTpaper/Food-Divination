@@ -157,13 +157,22 @@
     async function loadHistory() {
       const result = await callApi('getHistoryAdmin');
       
-      if (result && Array.isArray(result)) {
+      const tableContainer = document.getElementById('tableContainer');
+      const loading = document.getElementById('loading');
+      
+      if (!tableContainer || !loading) {
+        console.error('找不到 tableContainer 或 loading 元素');
+        return;
+      }
+
+      if (result && Array.isArray(result) && result.length > 0) {
         renderTable(result);
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('tableContainer').style.display = 'block';
+        loading.style.display = 'none';
+        tableContainer.style.display = 'block';
       } else {
-        document.getElementById('tableContainer').innerHTML = '<p style="text-align:center;color:#999;">無紀錄或載入失敗</p>';
-        document.getElementById('loading').style.display = 'none';
+        tableContainer.innerHTML = '<p style="text-align:center;color:#999;padding:40px;">目前沒有任何紀錄～</p>';
+        loading.style.display = 'none';
+        tableContainer.style.display = 'block';
       }
     }
 
