@@ -126,16 +126,6 @@
 
   <script>
     // ===== 頁面載入時自動初始化 =====
-    function initPage() {
-      loadHistory();   // 載入歷史紀錄表格
-      loadStats();     // 載入統計圖表
-    }
-
-    // 頁面載入完成後自動執行
-    window.onload = function() {
-      initPage();
-    };
-    window.onload = initPage;
 
     const API_URL = 'https://script.google.com/macros/s/AKfycbxWzPhSIzC42hS8a_kIypbrOHIRnYF_0ChyQV-GK4O7hJZ1DCb_r-VsJMIWkPTRXaxe1g/exec';
     // ===== JSONP 方式呼叫 API（繞過 CORS）=====
@@ -312,6 +302,16 @@
         }
       });
     }
+
+    // 新增這段
+    function initPage() {
+      loadHistory();
+      loadStats();
+    }
+
+    window.onload = function() {
+      initPage();
+    };
   </script>
 </body>
 </html>
