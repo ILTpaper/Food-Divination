@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>食物占卜 �</title>
+  <title>食物占卜  </title>
   <style>
     /* 溫馨手繪風格延續：米黃咖啡漸 + 暖棕漸層 */
     body {
@@ -807,7 +807,7 @@
       0% { transform: scale(1); }
       50% { transform: scale(1.1); }
       100% { transform: scale(1); }
-      }
+    }
   </style>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
@@ -978,10 +978,6 @@
         將今天的食物運勢分享給朋友吧~
       </p>
 
-      <button class="btn-primary" onclick="copyPageLink()" style="width: 80%; margin: 15px auto; padding: 12px;">
-        📋 複製網站連結
-      </button>
-
       <button class="btn-primary" onclick="downloadResultImage()" style="width: 80%; margin: 15px auto; padding: 12px; background: #ffd43b; color: #5a3e2b;">
         🖼️ 下載結果圖卡
       </button>
@@ -1103,41 +1099,29 @@
     };
     let currentUser = null;
 
-    //=========================================
-    const API_URL = '你的GAS exec URL 貼這裡';
-    //=========================================
-
     // Emoji 對應表
     const emojiMap = {
       'icon-egg-roll': '🥙',
       'icon-oatmeal': '🥣',
-      'icon-beef-noodle': '🜜',
+      'icon-beef-noodle': '🍜',
       'icon-salad': '🥗',
       'icon-boba-tea': '🧋',
-      'icon-braised-pork': '�',
+      'icon-braised-pork': '🥩',
       'icon-coffee': '☕',
-      'icon-oden': '🢢',
-      'icon-fried-chicken': '🗗',
-      'icon-onigiri': '🙙',
-      'icon-hotpot': '🲲',
-      'icon-yogurt': '🨨',
-      'icon-toast': '🞞',
+      'icon-oden': '🫔',
+      'icon-fried-chicken': '😅',
+      'icon-onigiri': '😅',
+      'icon-hotpot': '😅',
+      'icon-yogurt': '😅',
+      'icon-toast': '😅',
       'icon-pasta': '🍝',
       'icon-fruit': '🎍',
       'icon-bibimbap': '🚚',
-      'icon-donut': '🩩',
-      'icon-rice-bowl': '🱱',
+      'icon-donut': '😅',
+      'icon-rice-bowl': '😅',
       'icon-iced-coffee': '🧊',
-      'icon-miso-soup': '🵵'
+      'icon-miso-soup': '😅'
     };
-    
-    async function callApi(functionName, params = {}) {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({ functionName, ...params })
-      });
-      return await response.json();
-    }
 
     // ===== 頁面切換 =====
     function goToPage(pageNum) {
@@ -1175,21 +1159,21 @@
     }
 
     // ===== 載入卡牌(防 google 未載入) =====
-    async function drawRandomCards() {
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ functionName: 'drawRandomCards' })  // 傳 functionName 告訴後端執行哪個
-        });
-        if (!response.ok) throw new Error('API 錯誤');
-        const data = await response.json();
-        return data;  // 返回 11 張卡牌陣列
-      } catch (error) {
-        console.error('抽卡失敗:', error);
-        alert('抽卡失敗，請再試一次～');
-        return [];
+    function loadCards() {
+      if (typeof google === 'undefined' || !google.script) {
+        setTimeout(loadCards, 200);
+        return;
       }
+
+      google.script.run
+        .withSuccessHandler(function(foods) {
+          allCards = foods;
+          renderCards();
+        })
+        .withFailureHandler(function(error) {
+          alert('載入食物資料失敗:' + (error.message || error));
+        })
+        .drawRandomCards();
     }
 
     // ===== 渲染卡牌 =====
@@ -1359,22 +1343,6 @@
       document.getElementById('shareModal').classList.add('active');
     }
 
-    function copyPageLink() {
-      const url = window.location.href;
-      
-      navigator.clipboard.writeText(url).then(function() {
-        alert('🔗 網站連結已複製到剪貼簿!\n快去貼給朋友一起玩~');
-      }).catch(function() {
-        const textArea = document.createElement('textarea');
-        textArea.value = url;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        alert('🔗 網站連結已複製!');
-      });
-    }
-
     // 新增：使用 Web Share API 分享圖片（手機最佳體驗）
     async function shareToSocial(platform = 'all') {
       // 先產生圖片（同 downloadResultImage）
@@ -1461,22 +1429,19 @@
     // 建議：在分享按鈕區新增一個「一鍵分享到所有社群」按鈕
     // 在分享 Modal 中可加一個主要按鈕呼叫 shareToSocial() 不帶 platform
 
-    async function saveResult() {
-    if (!currentUser) return showLogin();
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        functionName: 'saveFortuneResult',
-        userId: currentUser.userId,
-        breakfast: selectedMeals.breakfast,
-        lunch: selectedMeals.lunch,
-        dinner: selectedMeals.dinner
-      })
-    });
-    const res = await response.json();
-    alert(res.success ? '結果已儲存！' : res.message);
-  }
+    function saveResult() {
+      if (!currentUser) {
+        showLogin();
+        alert('請先登入才能儲存結果喔~');
+        return;
+      }
+      
+      google.script.run
+        .withSuccessHandler(function(res) {
+          alert(res.success ? '結果已儲存!' : '儲存失敗');
+        })
+        .saveFortuneResult(currentUser.userId, selectedMeals.breakfast, selectedMeals.lunch, selectedMeals.dinner);
+    }
 
     // Modal
     function showLogin() { document.getElementById('loginModal').classList.add('active'); }
@@ -1506,74 +1471,77 @@
     }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    async function handleLogin() {
-  const username = document.getElementById('loginUsername').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  if (!username || !password) return alert('請填寫完整');
-
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ functionName: 'loginUser', username, password })
-  });
-  const res = await response.json();
-  if (res.success) {
-    currentUser = res;
-    alert('登入成功！');
-    closeModal('loginModal');
-  } else {
-    alert(res.message);
-  }
-}
+    function handleLogin() {
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      if (!username || !password) return alert('請填寫完整');
+      
+      google.script.run
+        .withSuccessHandler(res => {
+          if (res.success) {
+            currentUser = res;
+            alert('登入成功!歡迎 ' + res.username);
+            closeModal('loginModal');
+          } else alert(res.message);
+        })
+        .loginUser(username, password);
+    }
 
     function handleRegister() {
       const username = document.getElementById('registerUsername').value.trim();
       const password = document.getElementById('registerPassword').value;
       if (!username || !password) return alert('請填寫完整');
       
-      const res = await callApi('loginUser', { username, password });
+      google.script.run
+        .withSuccessHandler(res => {
+          if (res.success) {
+            alert('註冊成功!請登入');
+            closeModal('registerModal');
+            showLogin();
+          } else alert(res.message);
+        })
         .registerUser(username, password);
     }
 
-    async function loadHistoryRecords() {
-  if (!currentUser) return showLogin();
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ functionName: 'getUserHistory', userId: currentUser.userId })
-  });
-  const records = await response.json();
-  renderHistoryRecords(records || []);
-}
+    function loadHistoryRecords() {
+      if (!currentUser) return;
+
+      google.script.run
+        .withSuccessHandler(function(records) {
+          renderHistoryRecords(records);
+          console.log('讀取到的紀錄:', records);
+        })
+        .withFailureHandler(function(error) {
+          document.getElementById('records-area').innerHTML = `
+            <div class="no-record">
+              <span class="food-deco">😿</span><br>
+              載入失敗:${error.message || error}<br>
+              請再試一次或檢查網路~
+            </div>
+          `;
+        })
+        .getUserHistory(currentUser.userId);
+    }
 
     // ===== 【新增】刪除紀錄功能 =====
-    async function deleteRecord(recordId) {
-      if (!confirm('確定要刪除這筆占卜紀錄嗎？\n刪除後無法恢復喔～')) {
-        return;  // 使用者取消
+    function deleteRecord(recordId) {
+      if (!confirm('確定要刪除這筆占卜紀錄嗎?\n此操作無法復原喔!')) {
+        return;
       }
 
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },641
-          body: JSON.stringify({
-            functionName: 'deleteHistoryRecord',  // 對應 code.gs 的函數名
-            recordId: recordId
-          })
-        });
-
-        const res = await response.json();
-
-        if (res.success) {
-          alert('紀錄已成功刪除！');
-          loadHistoryRecords();  // 重新載入歷史紀錄（或 loadHistory() 如果是後台）
-        } else {
-          alert('刪除失敗：' + (res.message || '未知錯誤'));
-        }
-      } catch (error) {
-        console.error('刪除請求失敗:', error);
-        alert('網路錯誤，請再試一次～');
-      }
+      google.script.run
+        .withSuccessHandler(function(res) {
+          if (res.success) {
+            alert('✅ 紀錄已刪除!');
+            loadHistoryRecords(); // 重新載入列表
+          } else {
+            alert('❌ 刪除失敗: ' + res.message);
+          }
+        })
+        .withFailureHandler(function(error) {
+          alert('❌ 刪除時發生錯誤: ' + (error.message || error));
+        })
+        .deleteUserRecord(currentUser.userId, recordId);
     }
 
     function renderHistoryRecords(records) {
@@ -1680,7 +1648,44 @@
         '隨機混沌': '🎲'
       };
       return Object.entries(map).find(([k]) => label.includes(k))?.[1] || '🴴';
-    }
+    }// ===== 自動還原分享連結的占卜結果 =====
+function loadFromUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  const bId = params.get('b');
+  const lId = params.get('l');
+  const dId = params.get('d');
+  
+  if (!bId && !lId && !dId) return; // 沒有參數就不處理
+  
+  // 直接跳到結果頁
+  goToPage(4);
+  
+  const allFoods = getAllFoodsFromSomewhere(); // 我們需要食物資料對照
+  // 但因為 drawRandomCards 是非同步，我們改用全域食物列表（假設已載入）
+  
+  // 這裡利用已經在 loadCards() 時可能載入的食物，或直接呼叫 getAllFoods
+  google.script.run
+    .withSuccessHandler(function(allFoods) {
+      const foodMap = {};
+      allFoods.forEach(f => foodMap[f.food_id] = f);
+      
+      if (bId && foodMap[bId]) selectedMeals.breakfast = foodMap[bId];
+      if (lId && foodMap[lId]) selectedMeals.lunch = foodMap[lId];
+      if (dId && foodMap[dId]) selectedMeals.dinner = foodMap[dId];
+      
+      // 移除已移除的餐（預設不移除）
+      removedMeals = { breakfast: false, lunch: false, dinner: false };
+      
+      renderResultPage();
+    })
+    .getAllFoods();
+}
+
+// 頁面載入完成後檢查是否有分享參數
+window.addEventListener('load', function() {
+  // 小延遲確保其他初始化完成
+  setTimeout(loadFromUrlParams, 500);
+});
 
     function downloadResultImage() {
       const page4Actions = document.querySelector('#page4 .result-actions');
