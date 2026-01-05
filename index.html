@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>食物占卜  </title>
+  <title>食物占卜 �</title>
   <style>
     /* 溫馨手繪風格延續：米黃咖啡漸 + 暖棕漸層 */
     body {
@@ -813,7 +813,7 @@
 </head>
 <body>
   <div class="container">
-    
+
     <!-- 第1頁：首頁 -->
     <div id="page1" class="page active">
       <div class="home-header">
@@ -821,11 +821,11 @@
         <a onclick="showRegister()">會員註冊</a> |
         <a onclick="showHistory()">歷史查詢</a>
       </div>
-      
+
       <h1 class="home-title">
         食物占卜 <span class="emoji">🔮</span>
       </h1>
-      
+
       <div class="home-description">
         我們以溫暖、幽默且貼近生活的文字,讓你在選擇食物的過程中感<br>
         受到陪伴與理解。透過飲食與運勢的深度連結,「今天吃什麼」不<br>
@@ -833,18 +833,18 @@
         整體風格主打輕鬆療癒,專為學生與年輕族群設計,讓每一口食物<br>
         都成為替生活增添趣味與期待的起點。
       </div>
-      
+
       <button class="btn-primary" onclick="goToPage(2)">開始占卜</button>
     </div>
 
     <!-- 第2頁：抽卡頁面 -->
     <div id="page2" class="page">
       <h2 class="result-title">選擇你的三餐</h2>
-      
+
       <div class="cards-grid" id="cardsGrid">
         <!-- 卡牌將由 JavaScript 動態生成 -->
       </div>
-      
+
       <button class="shuffle-btn" onclick="shuffleCards()">洗牌</button>
       <button class="view-selection-btn" onclick="goToPage(3)">挑選卡片</button>
     </div>
@@ -852,7 +852,7 @@
     <!-- 第3頁：選擇卡牌 -->
     <div id="page3" class="page">
       <h2 class="result-title">您的占卜結果</h2>
-      
+
       <div class="meals-container">
         <div class="meal-slot">
           <div class="meal-label">早餐</div>
@@ -887,7 +887,7 @@
           </div>
         </div>
       </div>
-      
+
       <button class="btn-view-result" onclick="checkAndViewResult()">查看結果</button>
     </div>
 
@@ -896,11 +896,11 @@
       <div class="result-page">
         <div id="captureArea" class="result-box" style="background: rgba(90, 62, 43, 0.9); border-radius: 20px; padding: 40px; max-width: 600px; margin: 40px auto; box-shadow: 0 8px 32px rgba(0,0,0,0.3);">
         <h2 class="result-title-white" style="font-size: 36px; margin-bottom: 40px;">您的食物占卜結果</h2>
-        
+
         <div class="result-meals" id="resultMealsDisplay" style="margin-bottom: 40px;">
           <!-- 動態生成 -->
         </div>
-        
+
         <div class="fortune-text" id="fortuneText" style="font-size: 18px; line-height: 2.2; white-space: pre-wrap;">
           <!-- 動態生成 -->
         </div>
@@ -909,7 +909,7 @@
           🌟 食物占卜 🔮 | 今天吃什麼,由宇宙決定
         </div>
       </div>
-          
+
           <div class="result-actions">
             <button class="btn-share" onclick="shareResult()">分享結果</button>
             <button class="btn-save" onclick="saveResult()">儲存結果</button>
@@ -978,6 +978,10 @@
         將今天的食物運勢分享給朋友吧~
       </p>
 
+      <button class="btn-primary" onclick="copyPageLink()" style="width: 80%; margin: 15px auto; padding: 12px;">
+        📋 複製網站連結
+      </button>
+
       <button class="btn-primary" onclick="downloadResultImage()" style="width: 80%; margin: 15px auto; padding: 12px; background: #ffd43b; color: #5a3e2b;">
         🖼️ 下載結果圖卡
       </button>
@@ -987,25 +991,25 @@
       </div>
 
       <div style="display: flex; justify-content: center; gap: 30px; margin: 20px 0;" class="social-icons">
-        <a class="social-link" onclick="shareToIG()">
-          <div class="social-icon instagram">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="50" alt="Instagram">
-          </div>
-          <span class="social-label">Instagram</span>
-        </a>
-        <a class="social-link" onclick="shareToFB()">
-          <div class="social-icon facebook">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="50" alt="Facebook">
-          </div>
-          <span class="social-label">Facebook</span>
-        </a>
-        <a class="social-link" onclick="shareToX()">
-          <div class="social-icon x-twitter">
-            <img src="https://www.google.com/s2/favicons?domain=x.com&sz=128" width="50" alt="X">
-          </div>
-          <span class="social-label">X</span>
-        </a>
-      </div>
+      <a class="social-link" onclick="shareToIG()">
+        <div class="social-icon instagram">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="50" alt="Instagram">
+        </div>
+        <span class="social-label">Instagram</span>
+      </a>
+      <a class="social-link" onclick="shareToFB()">
+        <div class="social-icon facebook">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="50" alt="Facebook">
+        </div>
+        <span class="social-label">Facebook</span>
+      </a>
+      <a class="social-link" onclick="shareToX()">
+        <div class="social-icon x-twitter">
+          <img src="https://www.google.com/s2/favicons?domain=x.com&sz=128" width="50" alt="X">
+        </div>
+        <span class="social-label">X</span>
+      </a>
+    </div>
 
       <div class="modal-footer" style="margin-top: 30px;">
         <a onclick="closeModal('shareModal')" style="color: #8b6f47; cursor: pointer;">關閉</a>
@@ -1016,7 +1020,7 @@
   <!-- 歷史紀錄 Modal -->
   <div id="historyModal" class="modal">
     <div class="modal-content" style="max-width: 900px; width: 95%; max-height: 90vh; overflow-y: auto; background: rgba(255,255,252,0.95); border-radius: 32px; box-shadow: 0 20px 50px rgba(161,117,87,0.25); padding: 0;">
-      
+
       <div class="deco deco1">📚</div>
       <div class="deco deco2">🕯️</div>
       <div class="deco deco3">🌸</div>
@@ -1099,31 +1103,58 @@
     };
     let currentUser = null;
 
+    //=========================================
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyZsqdNpCDOqLmDH9ky79sJDmsl2eE6WOV9a5-NBiGzztcqbkv3LqaKDfuTEvjn456r/exec';
+    //=========================================
+
     // Emoji 對應表
     const emojiMap = {
       'icon-egg-roll': '🥙',
       'icon-oatmeal': '🥣',
-      'icon-beef-noodle': '🍜',
+      'icon-beef-noodle': '🜜',
       'icon-salad': '🥗',
       'icon-boba-tea': '🧋',
-      'icon-braised-pork': '🥩',
+      'icon-braised-pork': '�',
       'icon-coffee': '☕',
-      'icon-oden': '🫔',
-      'icon-fried-chicken': '😅',
-      'icon-onigiri': '😅',
-      'icon-hotpot': '😅',
-      'icon-yogurt': '😅',
-      'icon-toast': '😅',
+      'icon-oden': '🢢',
+      'icon-fried-chicken': '🗗',
+      'icon-onigiri': '🙙',
+      'icon-hotpot': '🲲',
+      'icon-yogurt': '🨨',
+      'icon-toast': '🞞',
       'icon-pasta': '🍝',
       'icon-fruit': '🎍',
       'icon-bibimbap': '🚚',
-      'icon-donut': '😅',
-      'icon-rice-bowl': '😅',
+      'icon-donut': '🩩',
+      'icon-rice-bowl': '🱱',
       'icon-iced-coffee': '🧊',
-      'icon-miso-soup': '😅'
+      'icon-miso-soup': '🵵'
     };
 
-    const API_URL = 'https://script.google.com/macros/s/AKfycbyZsqdNpCDOqLmDH9ky79sJDmsl2eE6WOV9a5-NBiGzztcqbkv3LqaKDfuTEvjn456r/exec';
+    // ===== JSONP 方式呼叫 API（繞過 CORS）=====
+    // ===== JSONP 呼叫（一定成功）=====
+async function callApi(functionName, params = {}) {
+  return new Promise((resolve, reject) => {
+    const callbackName = 'jsonp_' + Date.now();
+    const payload = JSON.stringify({ functionName, ...params });
+    const url = `${API_URL}?callback=${callbackName}&payload=${encodeURIComponent(payload)}`;
+
+    window[callbackName] = function(data) {
+      delete window[callbackName];
+      document.body.removeChild(script);
+      resolve(data);
+    };
+
+    const script = document.createElement('script');
+    script.src = url;
+    script.onerror = () => {
+      delete window[callbackName];
+      document.body.removeChild(script);
+      reject(new Error('載入失敗'));
+    };
+    document.body.appendChild(script);
+  });
+}
 
     // ===== 頁面切換 =====
     function goToPage(pageNum) {
@@ -1139,13 +1170,13 @@
         page.classList.remove('active');
       });
       document.getElementById('page' + pageNum).classList.add('active');
-      
+
       if (pageNum === 2) {
         setTimeout(() => {
           loadCards();
         }, 300);
       }
-      
+
       if (pageNum === 4) {
         renderResultPage();
       }
@@ -1161,33 +1192,43 @@
     }
 
     // ===== 載入卡牌(防 google 未載入) =====
-    function loadCards() {
-      if (typeof google === 'undefined' || !google.script) {
-        setTimeout(loadCards, 200);
-        return;
+    async function loadCards() {
+      const result = await callApi('drawRandomCards');
+      if (result && Array.isArray(result)) {
+        allCards = result;
+        renderCards();
+      } else {
+        alert('抽卡失敗，請重新整理頁面');
       }
+    }
 
-      google.script.run
-        .withSuccessHandler(function(foods) {
-          allCards = foods;
-          renderCards();
-        })
-        .withFailureHandler(function(error) {
-          alert('載入食物資料失敗:' + (error.message || error));
-        })
-        .drawRandomCards();
+    async function drawRandomCards() {
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ functionName: 'drawRandomCards' })  // 傳 functionName 告訴後端執行哪個
+        });
+        if (!response.ok) throw new Error('API 錯誤');
+        const data = await response.json();
+        return data;  // 返回 11 張卡牌陣列
+      } catch (error) {
+        console.error('抽卡失敗:', error);
+        alert('抽卡失敗，請再試一次～');
+        return [];
+      }
     }
 
     // ===== 渲染卡牌 =====
     function renderCards() {
       const grid = document.getElementById('cardsGrid');
       grid.innerHTML = '';
-      
+
       allCards.forEach((food, index) => {
         const card = document.createElement('div');
         card.className = 'card';
         card.setAttribute('data-index', index);
-        
+
         card.innerHTML = `
           <div class="card-inner">
             <div class="card-face card-back">
@@ -1200,17 +1241,17 @@
             </div>
           </div>
         `;
-        
+
         card.onclick = function() {
           if (card.classList.contains('flipped')) return;
-          
+
           card.classList.add('flipped');
-          
+
           setTimeout(() => {
             selectCard(food, index);
           }, 600);
         };
-        
+
         grid.appendChild(card);
       });
     }
@@ -1218,24 +1259,24 @@
     // ===== 選擇卡牌 =====
     function selectCard(food, index) {
       const selectedCount = Object.keys(selectedMeals).filter(key => selectedMeals[key] !== null).length;
-      
+
       if (selectedCount >= 3) {
         alert('三餐已選滿!請按「挑選卡片」繼續~');
         document.querySelector(`[data-index="${index}"]`).classList.remove('flipped');
         return;
       }
-      
+
       let mealType = null;
       if (!selectedMeals.breakfast) mealType = 'breakfast';
       else if (!selectedMeals.lunch) mealType = 'lunch';
       else if (!selectedMeals.dinner) mealType = 'dinner';
-      
+
       selectedMeals[mealType] = food;
       updateMealCard(mealType, food);
-      
+
       const mealName = mealType === 'breakfast' ? '早餐' : mealType === 'lunch' ? '午餐' : '晚餐';
       alert(`已為 ${mealName} 選擇:${food.food_name} ✨`);
-      
+
       if (Object.keys(selectedMeals).filter(key => selectedMeals[key] !== null).length === 3) {
         setTimeout(() => {
           if (confirm('三餐都選好了!要立刻查看挑選結果嗎?')) {
@@ -1264,7 +1305,7 @@
     function shuffleCards() {
       selectedMeals = { breakfast: null, lunch: null, dinner: null };
       removedMeals = { breakfast: false, lunch: false, dinner: false };
-      
+
       ['breakfast', 'lunch', 'dinner'].forEach(type => {
         updateMealCard(type, null);
         const btn = document.getElementById(type + 'Remove');
@@ -1273,7 +1314,7 @@
           btn.className = 'btn-remove';
         }
       });
-      
+
       loadCards();
       alert('牌已重新洗好!請開始抽卡🔮');
     }
@@ -1292,7 +1333,7 @@
       const button = document.getElementById(mealType + 'Remove');
       const cardElement = document.getElementById(mealType + 'Card');
       const label = cardElement.previousElementSibling;
-      
+
       if (removedMeals[mealType]) {
         removedMeals[mealType] = false;
         button.textContent = '移除';
@@ -1312,17 +1353,17 @@
     function renderResultPage() {
       const resultDisplay = document.getElementById('resultMealsDisplay');
       const fortuneText = document.getElementById('fortuneText');
-      
+
       resultDisplay.innerHTML = '';
       let fortunes = [];
-      
+
       const mealTypes = ['breakfast', 'lunch', 'dinner'];
       const mealLabels = { breakfast: '早餐', lunch: '午餐', dinner: '晚餐' };
-      
+
       mealTypes.forEach(mealType => {
         if (!removedMeals[mealType] && selectedMeals[mealType]) {
           const food = selectedMeals[mealType];
-          
+
           resultDisplay.innerHTML += `
             <div class="result-meal-item">
               <div class="result-card">
@@ -1332,11 +1373,11 @@
               <div class="result-food-name">${food.food_name}</div>
             </div>
           `;
-          
+
           fortunes.push('<strong>' + food.fortune_label + '</strong>:' + food.interpretation + '<br>' + food.lucky_advice);
         }
       });
-      
+
       fortuneText.innerHTML = fortunes.join('<br><br>') || '今天沒有選擇任何餐點喔~';
     }
 
@@ -1345,205 +1386,167 @@
       document.getElementById('shareModal').classList.add('active');
     }
 
-    // 新增：使用 Web Share API 分享圖片（手機最佳體驗）
-    async function shareToSocial(platform = 'all') {
-      // 先產生圖片（同 downloadResultImage）
-      const page4Actions = document.querySelector('#page4 .result-actions');
-      if (page4Actions) page4Actions.style.display = 'none';
+    function copyPageLink() {
+      const url = window.location.href;
 
-      try {
-        const canvas = await html2canvas(document.getElementById('captureArea'), {
-          scale: 2,
-          backgroundColor: null,
-          logging: false,
-          useCORS: true
-        });
-
-        if (page4Actions) page4Actions.style.display = 'flex';
-
-        canvas.toBlob(async (blob) => {
-          const file = new File([blob], '食物占卜結果_' + new Date().toISOString().slice(0,10) + '.png', { type: 'image/png' });
-
-          const shareData = {
-            files: [file],
-            title: '我的食物占卜結果 🔮',
-            text: '今天吃什麼？由宇宙決定！快來試試～\n#食物占卜 #今天吃什麼',
-            url: window.location.href
-          };
-
-          // 優先嘗試 Web Share API（手機上會跳出原生分享選單，可選 IG/FB/X）
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            try {
-              await navigator.share(shareData);
-              alert('✨ 分享成功！感謝你散播美食運勢～');
-              return;
-            } catch (err) {
-              console.log('Web Share 取消或失敗', err);
-            }
-          }
-
-          // Fallback 1: 如果不支援分享檔案，改分享文字+連結
-          if (navigator.share) {
-            try {
-              await navigator.share({
-                title: shareData.title,
-                text: shareData.text,
-                url: shareData.url
-              });
-              return;
-            } catch (err) {}
-          }
-
-          // Fallback 2: 特定平台舊式 intent（桌面或舊瀏覽器）
-          const text = encodeURIComponent(shareData.text + '\n' + shareData.url);
-          let url = '';
-          if (platform === 'ig' || platform === 'all') {
-            url = `https://www.instagram.com/?text=${text}`; // IG 無完美 intent，只能開首頁
-          } else if (platform === 'fb') {
-            url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${text}`;
-          } else if (platform === 'x') {
-            url = `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(window.location.href)}`;
-          }
-
-          if (url) {
-            window.open(url, '_blank', 'width=600,height=400');
-          }
-
-          // 最終 fallback：下載圖片讓使用者手動上傳
-          const link = document.createElement('a');
-          link.download = file.name;
-          link.href = URL.createObjectURL(blob);
-          link.click();
-          alert('📱 手機請用「分享」功能直接上傳圖片喔～\n桌面可下載後手動貼到社群！');
-        }, 'image/png');
-      } catch (err) {
-        if (page4Actions) page4Actions.style.display = 'flex';
-        console.error(err);
-        alert('產生圖片失敗，請再試一次～');
-      }
+      navigator.clipboard.writeText(url).then(function() {
+        alert('🔗 網站連結已複製到剪貼簿!\n快去貼給朋友一起玩~');
+      }).catch(function() {
+        const textArea = document.createElement('textarea');
+        textArea.value = url;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('🔗 網站連結已複製!');
+      });
     }
 
-    // 修改原有三個函數，全部呼叫同一個
-    function shareToIG() { shareToSocial('ig'); }
-    function shareToFB() { shareToSocial('fb'); }
-    function shareToX() { shareToSocial('x'); }
+    function shareToIG() {
+      const url = encodeURIComponent(window.location.href);
+      const text = encodeURIComponent('我剛用食物占卜抽到今天的運勢!超準的~你也來試試!🜜🔮');
+      window.open(`https://www.instagram.com/?url=${url}&text=${text}`, '_blank');
+    }
 
-    // 建議：在分享按鈕區新增一個「一鍵分享到所有社群」按鈕
-    // 在分享 Modal 中可加一個主要按鈕呼叫 shareToSocial() 不帶 platform
+    function shareToFB() {
+      const url = encodeURIComponent(window.location.href);
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+    }
 
-    function saveResult() {
+    function shareToX() {
+      const url = encodeURIComponent(window.location.href);
+      const text = encodeURIComponent('今天用食物占卜抽三餐,結果超有趣!🲲 你也來玩~');
+      window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+    }
+
+    async function saveResult() {
       if (!currentUser) {
+        alert('請先登入才能儲存結果');
         showLogin();
-        alert('請先登入才能儲存結果喔~');
         return;
       }
-      
-      google.script.run
-        .withSuccessHandler(function(res) {
-          alert(res.success ? '結果已儲存!' : '儲存失敗');
-        })
-        .saveFortuneResult(currentUser.userId, selectedMeals.breakfast, selectedMeals.lunch, selectedMeals.dinner);
+
+      const res = await callApi('saveFortuneResult', {
+        userId: currentUser.userId,
+        breakfast: selectedMeals.breakfast,
+        lunch: selectedMeals.lunch,
+        dinner: selectedMeals.dinner
+      });
+
+      if (res.success) {
+        alert('結果已儲存！');
+      } else {
+        alert(res.message || '儲存失敗');
+      }
     }
 
     // Modal
     function showLogin() { document.getElementById('loginModal').classList.add('active'); }
     function showRegister() { document.getElementById('registerModal').classList.add('active'); }
     function showHistory() {
-      if (!currentUser) {
-        alert('請先登入才能查看歷史紀錄喔~');
+      if (!currentUser || !currentUser.userId) {
+        alert('請先登入才能查看歷史紀錄喔～');
         showLogin();
         return;
       }
 
-      console.log('目前登入 userId:', currentUser.userId);
-
       document.getElementById('currentMemberDisplay').textContent = currentUser.username;
-
-      document.getElementById('records-area').innerHTML = `
-        <div class="no-record">
-          <span class="food-deco">⏳</span><br>
-          正在喚醒你的占卜記憶...<br>
-          請稍等一下~
-        </div>
-      `;
-
       document.getElementById('historyModal').classList.add('active');
-      
-      loadHistoryRecords();
+
+      loadHistoryRecords();  // 自動載入
     }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    function handleLogin() {
+    async function handleLogin() {
       const username = document.getElementById('loginUsername').value.trim();
       const password = document.getElementById('loginPassword').value;
-      if (!username || !password) return alert('請填寫完整');
-      
-      google.script.run
-        .withSuccessHandler(res => {
-          if (res.success) {
-            currentUser = res;
-            alert('登入成功!歡迎 ' + res.username);
-            closeModal('loginModal');
-          } else alert(res.message);
-        })
-        .loginUser(username, password);
-    }
 
-    function handleRegister() {
-      const username = document.getElementById('registerUsername').value.trim();
-      const password = document.getElementById('registerPassword').value;
-      if (!username || !password) return alert('請填寫完整');
-      
-      google.script.run
-        .withSuccessHandler(res => {
-          if (res.success) {
-            alert('註冊成功!請登入');
-            closeModal('registerModal');
-            showLogin();
-          } else alert(res.message);
-        })
-        .registerUser(username, password);
-    }
-
-    function loadHistoryRecords() {
-      if (!currentUser) return;
-
-      google.script.run
-        .withSuccessHandler(function(records) {
-          renderHistoryRecords(records);
-          console.log('讀取到的紀錄:', records);
-        })
-        .withFailureHandler(function(error) {
-          document.getElementById('records-area').innerHTML = `
-            <div class="no-record">
-              <span class="food-deco">😿</span><br>
-              載入失敗:${error.message || error}<br>
-              請再試一次或檢查網路~
-            </div>
-          `;
-        })
-        .getUserHistory(currentUser.userId);
-    }
-
-    // ===== 【新增】刪除紀錄功能 =====
-    function deleteRecord(recordId) {
-      if (!confirm('確定要刪除這筆占卜紀錄嗎?\n此操作無法復原喔!')) {
+      if (!username || !password) {
+        alert('請輸入帳號和密碼');
         return;
       }
 
-      google.script.run
-        .withSuccessHandler(function(res) {
-          if (res.success) {
-            alert('✅ 紀錄已刪除!');
-            loadHistoryRecords(); // 重新載入列表
-          } else {
-            alert('❌ 刪除失敗: ' + res.message);
-          }
-        })
-        .withFailureHandler(function(error) {
-          alert('❌ 刪除時發生錯誤: ' + (error.message || error));
-        })
-        .deleteUserRecord(currentUser.userId, recordId);
+      const res = await callApi('loginUser', { username, password });
+
+      if (res.success) {
+        currentUser = res;  // { userId, username }
+        alert('登入成功！歡迎 ' + res.username);
+        closeModal('loginModal');
+        // 可選：更新頁面顯示登入狀態
+      } else {
+        alert(res.message || '登入失敗');
+      }
+    }
+
+    async function handleRegister() {
+      const username = document.getElementById('registerUsername').value.trim();
+      const password = document.getElementById('registerPassword').value;
+
+      if (!username || !password) {
+        alert('請輸入帳號和密碼');
+        return;
+      }
+
+      const res = await callApi('registerUser', { username, password });
+
+      if (res.success) {
+        alert('註冊成功！請登入');
+        closeModal('registerModal');
+        showLogin();
+      } else {
+        alert(res.message || '註冊失敗');
+      }
+    }
+
+    async function loadHistoryRecords() {
+      if (!currentUser) {
+        alert('請先登入才能查看歷史紀錄');
+        showLogin();
+        return;
+      }
+
+      const records = await callApi('getUserHistory', { userId: currentUser.userId });
+
+      if (records && Array.isArray(records)) {
+        renderHistoryRecords(records);
+      } else {
+        renderHistoryRecords([]);  // 顯示無紀錄提示
+      }
+    }
+
+    // ===== 【新增】刪除紀錄功能 =====
+    async function deleteRecord(recordId) {
+      if (!confirm('確定要刪除這筆占卜紀錄嗎？\n刪除後無法恢復喔～')) {
+        return;  // 使用者取消
+      }
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            functionName: 'deleteHistoryRecord',  // 對應 code.gs 的函數名
+            recordId: recordId
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const res = await response.json();
+
+        if (res.success) {
+          alert('紀錄已成功刪除！');
+          loadHistoryRecords();  // 如果是主網站歷史 modal
+          // 如果是後台 history.html，請改成 loadHistory();
+        } else {
+          alert('刪除失敗：' + (res.message || '未知錯誤'));
+        }
+      } catch (error) {
+        console.error('刪除請求失敗:', error);
+        alert('網路錯誤，請再試一次～');
+      }
     }
 
     function renderHistoryRecords(records) {
@@ -1650,44 +1653,7 @@
         '隨機混沌': '🎲'
       };
       return Object.entries(map).find(([k]) => label.includes(k))?.[1] || '🴴';
-    }// ===== 自動還原分享連結的占卜結果 =====
-function loadFromUrlParams() {
-  const params = new URLSearchParams(window.location.search);
-  const bId = params.get('b');
-  const lId = params.get('l');
-  const dId = params.get('d');
-  
-  if (!bId && !lId && !dId) return; // 沒有參數就不處理
-  
-  // 直接跳到結果頁
-  goToPage(4);
-  
-  const allFoods = getAllFoodsFromSomewhere(); // 我們需要食物資料對照
-  // 但因為 drawRandomCards 是非同步，我們改用全域食物列表（假設已載入）
-  
-  // 這裡利用已經在 loadCards() 時可能載入的食物，或直接呼叫 getAllFoods
-  google.script.run
-    .withSuccessHandler(function(allFoods) {
-      const foodMap = {};
-      allFoods.forEach(f => foodMap[f.food_id] = f);
-      
-      if (bId && foodMap[bId]) selectedMeals.breakfast = foodMap[bId];
-      if (lId && foodMap[lId]) selectedMeals.lunch = foodMap[lId];
-      if (dId && foodMap[dId]) selectedMeals.dinner = foodMap[dId];
-      
-      // 移除已移除的餐（預設不移除）
-      removedMeals = { breakfast: false, lunch: false, dinner: false };
-      
-      renderResultPage();
-    })
-    .getAllFoods();
-}
-
-// 頁面載入完成後檢查是否有分享參數
-window.addEventListener('load', function() {
-  // 小延遲確保其他初始化完成
-  setTimeout(loadFromUrlParams, 500);
-});
+    }
 
     function downloadResultImage() {
       const page4Actions = document.querySelector('#page4 .result-actions');
@@ -1713,12 +1679,5 @@ window.addEventListener('load', function() {
         console.error(err);
       });
     }
-
-    document.querySelectorAll('.social-link').forEach(link => {
-      link.addEventListener('click', () => {
-        link.style.animation = 'pulse 0.3s'; // 點擊時脈動效果
-      });
-    });
   </script>
 </body>
-</html>
