@@ -711,6 +711,103 @@
       cursor: pointer;
       text-decoration: underline;
     }
+
+    /* 社群分享美編 */
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 25px; /* 調整間距，讓更舒適 */
+      margin: 25px 0;
+      flex-wrap: wrap; /* 行動裝置自動換行 */
+    }
+
+    .social-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      cursor: pointer;
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px) scale(1.05); /* hover時輕微浮起和放大 */
+      opacity: 0.9;
+    }
+
+    .social-icon {
+      width: 60px; /* 稍大一點，提升視覺焦點 */
+      height: 60px;
+      border-radius: 50%; /* 圓形邊框，現代感 */
+      background: rgba(255, 255, 252, 0.95); /* 匹配網頁背景，溫暖米黃 */
+      box-shadow: 0 4px 12px rgba(161, 117, 87, 0.15); /* 輕柔陰影 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden; /* 防止圖示溢出 */
+      transition: box-shadow 0.3s ease, background 0.3s ease;
+    }
+
+    .social-link:hover .social-icon {
+      box-shadow: 0 8px 20px rgba(255, 171, 64, 0.3); /* hover時加強陰影，暖橙色 */
+      background: rgba(255, 240, 220, 0.8); /* 輕微變色，呼應主題 */
+    }
+
+    .social-icon img {
+      width: 40px; /* 內部圖示大小，留白邊距 */
+      height: 40px;
+      object-fit: contain; /* 確保圖示不變形 */
+    }
+
+    /* 平台特定顏色調整（可選，增强識別度） */
+    .social-icon.instagram {
+      border: 2px solid #E1306C; /* IG粉紅 */
+    }
+
+    .social-icon.facebook {
+      border: 2px solid #1877F2; /* FB藍 */
+    }
+
+    .social-icon.x-twitter {
+      border: 2px solid #000000; /* X黑 */
+    }
+
+    .social-label {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #6d4c41; /* 匹配網頁文字色 */
+      font-weight: 500;
+      opacity: 0.9;
+      transition: color 0.3s ease;
+    }
+
+    .social-link:hover .social-label {
+      color: #ffab40; /* hover時變成暖橙，增加互動感 */
+    }
+
+    /* 響應式調整 */
+    @media (max-width: 768px) {
+      .social-icons {
+        gap: 15px;
+      }
+      .social-icon {
+        width: 50px;
+        height: 50px;
+      }
+      .social-icon img {
+        width: 30px;
+        height: 30px;
+      }
+      .social-label {
+        font-size: 12px;
+      }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
   </style>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
@@ -893,15 +990,24 @@
         <span style="color: #8b6f47; font-size: 14px;">或直接分享到</span>
       </div>
 
-      <div style="display: flex; justify-content: center; gap: 30px; margin: 20px 0;">
-        <a onclick="shareToIG()" style="cursor: pointer;">
-          <img src="https://www.google.com/s2/favicons?domain=instagram.com&sz=128" width="50" alt="Instagram">
+      <div style="display: flex; justify-content: center; gap: 30px; margin: 20px 0;" class="social-icons">
+        <a class="social-link" onclick="shareToIG()">
+          <div class="social-icon instagram">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="50" alt="Instagram">
+          </div>
+          <span class="social-label">Instagram</span>
         </a>
-        <a onclick="shareToFB()" style="cursor: pointer;">
-          <img src="https://www.google.com/s2/favicons?domain=facebook.com&sz=128" width="50" alt="Facebook">
+        <a class="social-link" onclick="shareToFB()">
+          <div class="social-icon facebook">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="50" alt="Facebook">
+          </div>
+          <span class="social-label">Facebook</span>
         </a>
-        <a onclick="shareToX()" style="cursor: pointer;">
-          <img src="https://www.google.com/s2/favicons?domain=x.com&sz=128" width="50" alt="X">
+        <a class="social-link" onclick="shareToX()">
+          <div class="social-icon x-twitter">
+            <img src="https://www.google.com/s2/favicons?domain=x.com&sz=128" width="50" alt="X">
+          </div>
+          <span class="social-label">X</span>
         </a>
       </div>
 
@@ -955,15 +1061,24 @@
         </div>
       </div>
 
-      <div style="display: flex; justify-content: center; gap: 30px; margin: 20px 0;">
-        <a onclick="shareToIG()" style="cursor: pointer;">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="50" alt="Instagram">
+      <div style="display: flex; justify-content: center; gap: 30px; margin: 20px 0;" class="social-icons">
+        <a class="social-link" onclick="shareToIG()">
+          <div class="social-icon instagram">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="50" alt="Instagram">
+          </div>
+          <span class="social-label">Instagram</span>
         </a>
-        <a onclick="shareToFB()" style="cursor: pointer;">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="50" alt="Facebook">
+        <a class="social-link" onclick="shareToFB()">
+          <div class="social-icon facebook">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="50" alt="Facebook">
+          </div>
+          <span class="social-label">Facebook</span>
         </a>
-        <a onclick="shareToX()" style="cursor: pointer;">
-          <img src="https://www.google.com/s2/favicons?domain=x.com&sz=128" width="50" alt="X">
+        <a class="social-link" onclick="shareToX()">
+          <div class="social-icon x-twitter">
+            <img src="https://www.google.com/s2/favicons?domain=x.com&sz=128" width="50" alt="X">
+          </div>
+          <span class="social-label">X</span>
         </a>
       </div>
 
@@ -989,7 +1104,7 @@
     let currentUser = null;
 
     //=========================================
-    const API_URL = 'https://script.google.com/macros/s/AKfycbyZsqdNpCDOqLmDH9ky79sJDmsl2eE6WOV9a5-NBiGzztcqbkv3LqaKDfuTEvjn456r/exec';
+    const API_URL = '你的GAS exec URL 貼這裡';
     //=========================================
 
     // Emoji 對應表
@@ -1016,30 +1131,13 @@
       'icon-miso-soup': '🵵'
     };
     
-    // ===== JSONP 方式呼叫 API（繞過 CORS）=====
-    // ===== JSONP 呼叫（一定成功）=====
-async function callApi(functionName, params = {}) {
-  return new Promise((resolve, reject) => {
-    const callbackName = 'jsonp_' + Date.now();
-    const payload = JSON.stringify({ functionName, ...params });
-    const url = `${API_URL}?callback=${callbackName}&payload=${encodeURIComponent(payload)}`;
-
-    window[callbackName] = function(data) {
-      delete window[callbackName];
-      document.body.removeChild(script);
-      resolve(data);
-    };
-
-    const script = document.createElement('script');
-    script.src = url;
-    script.onerror = () => {
-      delete window[callbackName];
-      document.body.removeChild(script);
-      reject(new Error('載入失敗'));
-    };
-    document.body.appendChild(script);
-  });
-}
+    async function callApi(functionName, params = {}) {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ functionName, ...params })
+      });
+      return await response.json();
+    }
 
     // ===== 頁面切換 =====
     function goToPage(pageNum) {
@@ -1077,16 +1175,6 @@ async function callApi(functionName, params = {}) {
     }
 
     // ===== 載入卡牌(防 google 未載入) =====
-    async function loadCards() {
-      const result = await callApi('drawRandomCards');
-      if (result && Array.isArray(result)) {
-        allCards = result;
-        renderCards();
-      } else {
-        alert('抽卡失敗，請重新整理頁面');
-      }
-    }
-
     async function drawRandomCards() {
       try {
         const response = await fetch(API_URL, {
@@ -1305,99 +1393,89 @@ async function callApi(functionName, params = {}) {
     }
 
     async function saveResult() {
-      if (!currentUser) {
-        alert('請先登入才能儲存結果');
-        showLogin();
-        return;
-      }
-
-      const res = await callApi('saveFortuneResult', {
-        userId: currentUser.userId,
-        breakfast: selectedMeals.breakfast,
-        lunch: selectedMeals.lunch,
-        dinner: selectedMeals.dinner
-      });
-
-      if (res.success) {
-        alert('結果已儲存！');
-      } else {
-        alert(res.message || '儲存失敗');
-      }
-    }
+  if (!currentUser) return showLogin();
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      functionName: 'saveFortuneResult',
+      userId: currentUser.userId,
+      breakfast: selectedMeals.breakfast,
+      lunch: selectedMeals.lunch,
+      dinner: selectedMeals.dinner
+    })
+  });
+  const res = await response.json();
+  alert(res.success ? '結果已儲存！' : res.message);
+}
 
     // Modal
     function showLogin() { document.getElementById('loginModal').classList.add('active'); }
     function showRegister() { document.getElementById('registerModal').classList.add('active'); }
     function showHistory() {
-      if (!currentUser || !currentUser.userId) {
-        alert('請先登入才能查看歷史紀錄喔～');
+      if (!currentUser) {
+        alert('請先登入才能查看歷史紀錄喔~');
         showLogin();
         return;
       }
 
+      console.log('目前登入 userId:', currentUser.userId);
+
       document.getElementById('currentMemberDisplay').textContent = currentUser.username;
+
+      document.getElementById('records-area').innerHTML = `
+        <div class="no-record">
+          <span class="food-deco">⏳</span><br>
+          正在喚醒你的占卜記憶...<br>
+          請稍等一下~
+        </div>
+      `;
+
       document.getElementById('historyModal').classList.add('active');
       
-      loadHistoryRecords();  // 自動載入
+      loadHistoryRecords();
     }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
     async function handleLogin() {
-      const username = document.getElementById('loginUsername').value.trim();
-      const password = document.getElementById('loginPassword').value;
-      
-      if (!username || !password) {
-        alert('請輸入帳號和密碼');
-        return;
-      }
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if (!username || !password) return alert('請填寫完整');
 
-      const res = await callApi('loginUser', { username, password });
-      
-      if (res.success) {
-        currentUser = res;  // { userId, username }
-        alert('登入成功！歡迎 ' + res.username);
-        closeModal('loginModal');
-        // 可選：更新頁面顯示登入狀態
-      } else {
-        alert(res.message || '登入失敗');
-      }
-    }
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ functionName: 'loginUser', username, password })
+  });
+  const res = await response.json();
+  if (res.success) {
+    currentUser = res;
+    alert('登入成功！');
+    closeModal('loginModal');
+  } else {
+    alert(res.message);
+  }
+}
 
-    async function handleRegister() {
+    function handleRegister() {
       const username = document.getElementById('registerUsername').value.trim();
       const password = document.getElementById('registerPassword').value;
+      if (!username || !password) return alert('請填寫完整');
       
-      if (!username || !password) {
-        alert('請輸入帳號和密碼');
-        return;
-      }
-
-      const res = await callApi('registerUser', { username, password });
-      
-      if (res.success) {
-        alert('註冊成功！請登入');
-        closeModal('registerModal');
-        showLogin();
-      } else {
-        alert(res.message || '註冊失敗');
-      }
+      const res = await callApi('loginUser', { username, password });
+        .registerUser(username, password);
     }
 
     async function loadHistoryRecords() {
-      if (!currentUser) {
-        alert('請先登入才能查看歷史紀錄');
-        showLogin();
-        return;
-      }
-
-      const records = await callApi('getUserHistory', { userId: currentUser.userId });
-      
-      if (records && Array.isArray(records)) {
-        renderHistoryRecords(records);
-      } else {
-        renderHistoryRecords([]);  // 顯示無紀錄提示
-      }
-    }
+  if (!currentUser) return showLogin();
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ functionName: 'getUserHistory', userId: currentUser.userId })
+  });
+  const records = await response.json();
+  renderHistoryRecords(records || []);
+}
 
     // ===== 【新增】刪除紀錄功能 =====
     async function deleteRecord(recordId) {
@@ -1408,23 +1486,18 @@ async function callApi(functionName, params = {}) {
       try {
         const response = await fetch(API_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json' },641
           body: JSON.stringify({
             functionName: 'deleteHistoryRecord',  // 對應 code.gs 的函數名
             recordId: recordId
           })
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
         const res = await response.json();
 
         if (res.success) {
           alert('紀錄已成功刪除！');
-          loadHistoryRecords();  // 如果是主網站歷史 modal
-          // 如果是後台 history.html，請改成 loadHistory();
+          loadHistoryRecords();  // 重新載入歷史紀錄（或 loadHistory() 如果是後台）
         } else {
           alert('刪除失敗：' + (res.message || '未知錯誤'));
         }
@@ -1564,6 +1637,12 @@ async function callApi(functionName, params = {}) {
         console.error(err);
       });
     }
+
+    document.querySelectorAll('.social-link').forEach(link => {
+      link.addEventListener('click', () => {
+        link.style.animation = 'pulse 0.3s'; // 點擊時脈動效果
+      });
+    });
   </script>
 </body>
 </html>
